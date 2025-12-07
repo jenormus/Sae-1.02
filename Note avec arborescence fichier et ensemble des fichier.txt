@@ -1,15 +1,15 @@
--pnj
--quete
--monstre
--place
+-pnj e
+-quete e
+-monstre e
+-place y 
 -user
--possible attaque
+-possible attaque y
 -inventaire
 -sauvegarde
--possibilité question
--dialogue
--question
--augmentation par avancement
+-possibilité question y
+-dialogue e
+-question y
+-augmentation par avancement e
 
 -jeux(dossier) -entité(dossier) -pnj(csv)
 	      						-monstre(csv)
@@ -30,3 +30,4 @@
 
 
       		-place(csv)
+
