@@ -1,23 +1,23 @@
--pnj*
--quete*
--monstre*
--place*
--user*
--possible attaque*
--inventaire*
--sauvegarde*
--possibilité question*
--dialogue*
--question*
--augmentation par avancement*
+-pnj
+-quete
+-monstre
+-place
+-user
+-possible attaque
+-inventaire
+-sauvegarde
+-possibilité question
+-dialogue
+-question
+-augmentation par avancement
 
 -jeux(dossier) -entité(dossier) -pnj(csv)
-	      			-monstre(csv)
+	      						-monstre(csv)
 				-option pnj(dossier)	-dialogue(csv)
-							-quete(csv)
-				-augmentation par avancement(puissance monstre)(csv)
-	      			-Ascii art monstre(dossier)
-	      			-Ascii art pnj(dossier)
+										-quete(csv)
+										-augmentation par avancement(puissance monstre)(csv)
+	      								-Ascii art monstre(dossier)
+	      								-Ascii art pnj(dossier)
 
 
 		
@@ -27,5 +27,6 @@
       		-systeme de magie(dossier) -possible attaque(csv)
 					   -possibilité question (rep fausse)(csv)
 					   -question(rep vrai)(csv)
+
 
       		-place(csv)
