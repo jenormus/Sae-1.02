@@ -6,9 +6,8 @@
 -possible attaque y
 -inventaire
 -sauvegarde
--possibilité question y
 -dialogue e
--question y
+-question y (possibilité question et question on fusioner
 -augmentation par avancement e
 
 -jeux(dossier) -entité(dossier) -pnj(csv)
@@ -30,4 +29,5 @@
 
 
       		-place(csv)
+
 
