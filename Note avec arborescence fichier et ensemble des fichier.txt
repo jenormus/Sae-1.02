@@ -1,14 +1,12 @@
--pnj e
--quete e
--monstre e
--place y 
--user
--possible attaque y
--inventaire
--sauvegarde
--dialogue e
--question y (possibilité question et question on fusioner
--augmentation par avancement e
+================= PERSONNE A =================
+|  CSV, système, sauvegarde, zones, PNJ,     |
+|  quêtes, inventaire, progression           |
+==============================================
+
+================= PERSONNE B =================
+|  Gameplay, combat, dialogues interactifs,  |
+|  ASCII art, affichage, moteur du jeu       |
+==============================================
 
 -jeux(dossier) -entité(dossier) -pnj(csv)
 	      						-monstre(csv)
@@ -24,10 +22,10 @@
 					-inventaire(csv)
 					-sauvegarde(csv)
       		-systeme de magie(dossier) -possible attaque(csv)
-					   -possibilité question (rep fausse)(csv)
 					   -question(rep vrai)(csv)
 
 
       		-place(csv)
+
 
 
