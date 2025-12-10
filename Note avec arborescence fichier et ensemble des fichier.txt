@@ -1,12 +1,148 @@
-================= PERSONNE A =================
-|  CSV, système, sauvegarde, zones, PNJ,     |
-|  quêtes, inventaire, progression           |
-==============================================
+:
 
-================= PERSONNE B =================
-|  Gameplay, combat, dialogues interactifs,  |
-|  ASCII art, affichage, moteur du jeu       |
-==============================================
+🧑‍💻 Personne A → SYSTÈME, DONNÉES & GESTION
+
+Tout ce qui touche aux CSV, sauvegardes, chargement, progression, inventaire, PNJ, quêtes, zones, monstres.
+
+📁 Module 1 : SYSTÈME & DONNÉES
+
+1. Gestion des CSV & fichiers
+
+loadCSV
+
+saveCSV
+
+loadPNJ
+
+loadQuetes
+
+loadMonstres
+
+loadLieux
+
+loadAttaques
+
+loadInventaire
+
+loadDialogues
+
+loadQuestions
+
+loadUserData
+
+loadProgression
+
+loadAsciiArt
+
+2. Sauvegarde / Chargement partie
+
+chargerSauvegarde
+
+sauvegarderPartie
+
+initialiserNouvellePartie
+
+3. Inventaire
+
+afficherInventaire
+
+utiliserObjet
+
+ajouterObjet
+
+4. Progression & niveaux
+
+augmenterNiveauJeu
+
+mettreAJourStatsAvecNiveau
+
+5. Zones & déplacement
+
+afficherLieuActuel
+
+chargerLieuActuelDepuisSave
+
+deplacerVers
+
+verifierZone
+
+genererMonstresAleatoires
+
+6. PNJ
+
+trouverPNJDansZone
+
+afficherDialoguePNJ
+
+verifierPNJ
+
+7. Quêtes
+
+verifierQuetesActives
+
+mettreAJourQuete
+
+validerQuete
+
+verifierCompletionQuete
+
+💡 Personne A gère toute la “backend logic” du jeu.
+
+🧑‍🎨 Personne B → COMBAT, GAMEPLAY & INTERFACE
+
+Tout ce qui touche au gameplay, combat, choix, dialogues complexes, UI ASCII et moteur du jeu.
+
+📁 Module 2 : GAMEPLAY & INTERFACE
+
+1. Dialogues interactifs
+
+chargerDialoguePNJ
+
+afficherChoixDialogue
+
+executerChoixDialogue
+
+2. Combat
+
+combat
+
+afficherOptionsCombat
+
+afficherAttaquesDisponibles
+
+choisirAttaque
+
+poserQuestionAttaque
+
+verifierReponse
+
+3. Dégâts
+
+appliquerDegatsSurMonstre
+
+appliquerDegatsSurJoueur
+
+4. ASCII / interface
+
+afficherAsciiArt
+
+chargerImage
+
+chargerPhrase
+
+5. UI du joueur
+
+afficherStats
+
+6. Moteur global du jeu
+
+jeu
+
+verifierEntree
+
+random
+
+clearConsole
 
 -jeux(dossier) -entité(dossier) -pnj(csv)
 	      						-monstre(csv)
@@ -26,6 +162,7 @@
 
 
       		-place(csv)
+
 
 
 
