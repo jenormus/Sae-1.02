@@ -1,7 +1,8 @@
+import extensions.File;
 class Main extends Program{
 
     void algorithm(){
-        print(loadSprite("entité/Ascii art pnj/elf;txt"));
+        print(loadSprite("entité/Ascii art pnj/elf.txt"));
     }
 
     String loadSprite(String chemin){
