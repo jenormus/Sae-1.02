@@ -11,7 +11,8 @@ class Main extends Program{
 
     void commencer(){
         afficherMisc("title");
-        print(question());
+        User joueur = newUser();
+        print(joueur);
     }
 
 //Charge les images textes//
@@ -70,6 +71,7 @@ class Main extends Program{
             resultat = readString();
             if (resultat == ""){
                 trigger = true;
+                println("Il semble que votre langue ait fourché");
             }
         }while(trigger);
         return resultat;
@@ -117,8 +119,37 @@ class Main extends Program{
     }
 
     User newUser(){
-        User utilisateur = new User;
-        CSVFile current = 
+        User utilisateur = new User();
+        CSVFile current = loadCSV("jeux/utilisateur/sauvegarde.csv",';');
+        if (equals(getCell(current,0,0)," ")){
+            utilisateur.nom = askNom();
+        } else {
+            utilisateur.nom = getCell(current,0,0);
+        }
+        if (equals(getCell(current,3,0)," ")){
+            utilisateur.quete_cible=" ";
+            utilisateur.quete_kill=0;
+        } else {
+            utilisateur.quete_cible=getCell(current,3,0);
+            utilisateur.quete_kill=stringToInt(getCell(current,3,1));
+        }
+        utilisateur.level=stringToInt(getCell(current,2,0));
+        utilisateur.pv = stringToInt(getCell(current,1,0));
+        utilisateur.pv_max= stringToInt(getCell(current,1,1));
+        return utilisateur;
+    }
+
+    String askNom(){
+        println("Il me semble que c'est la première fois que l'on se voit ici, comment t'appelles-tu ?\n");
+        return saisieTexte();
+
+    }
+
+    void print(User utilisateur){
+        println("nom = "+utilisateur.nom);
+        println("vie = "+utilisateur.pv+":"+utilisateur.pv_max);
+        println("level = "+utilisateur.level);
+        println("quete = "+utilisateur.quete_kill+utilisateur.quete_cible+"tués");
     }
 
 }
