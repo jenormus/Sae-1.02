@@ -10,7 +10,7 @@ class Main extends Program{
     
 
     void commencer(){
-        //afficherMisc("title");
+        afficherMisc("title");
         print(question());
     }
 
@@ -62,6 +62,19 @@ class Main extends Program{
         return charAt(resultat,0)-'0';
     }
 
+    String saisieTexte(){
+        String resultat;
+        boolean trigger;
+        do{
+            trigger = false;
+            resultat = readString();
+            if (resultat == ""){
+                trigger = true;
+            }
+        }while(trigger);
+        return resultat;
+    }
+
 //Permet de charger un String[] contenant [question + réponses possible*4 + réponse]  
 
     String[] loadQuestion(){
@@ -101,6 +114,11 @@ class Main extends Program{
             return true;
         }
         return false;
+    }
+
+    User newUser(){
+        User utilisateur = new User;
+        CSVFile current = 
     }
 
 }
