@@ -84,7 +84,7 @@ class Main extends Program{
 //Permet d'afficher la question
 
     void afficherQuestion(String[] question){
-        println(question[0]+"\n\n");
+        println(question[0]+"\n");
         for (int i=0;i<4;i++){
             println("["+i+"] "+question[i+1]);
         }
