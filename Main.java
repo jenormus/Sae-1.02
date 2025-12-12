@@ -1,11 +1,22 @@
 import extensions.File;
+import extensions .CSVFile;
+
 class Main extends Program{
 
     void algorithm(){
-        print(loadSprite("entité/Ascii art pnj/elf.txt"));
+        commencer();
     }
 
-    String loadSprite(String chemin){
+    
+
+    void commencer(){
+        afficherMisc("title");
+        print(question());
+    }
+
+//Charge les images textes//
+
+    String loadImage(String chemin){
         String resultat="";
         File current=newFile(chemin);
         while(ready(current)){
@@ -13,4 +24,77 @@ class Main extends Program{
         }
         return resultat;
     }
+
+//Fonctions shortcuts
+//////////////////////////////////////////////////////////////////////////
+
+    String loadSpritePNJ(String pnj){
+        return loadImage("jeux/entité/Ascii art pnj/"+pnj+".txt");
+    }
+
+    String loadSpriteMonstre(String monstre){
+        return loadImage("jeux/entité/Ascii art monstre/"+monstre+".txt");
+    }
+
+    String loadSpriteMisc(String misc){
+        return loadImage("jeux/entité/Ascii misc/"+misc+".txt");
+    }
+
+    void afficherMisc(String image){
+        println(loadSpriteMisc(image));
+    }
+
+//////////////////////////////////////////////////////////////////////////
+
+//Permet à l'utilisateur d'entrer une valeure entre 0 et le paramètre
+
+    int saisie(int possibilite){
+        String resultat;
+        boolean trigger=true;
+        do{
+            resultat = readString();
+            if((length(resultat) != 1) || (charAt(resultat,0)<'0' || charAt(resultat,0)>(possibilite+'0'))){
+                println("Il semble que votre langue ait fourché");
+            } else {
+                trigger=false;
+            }
+        }while(trigger);
+        return charAt(resultat,0)-'0';
+    }
+
+//Permet de charger un String[] contenant [question + réponses possible*4 + réponse]  
+
+    String[] loadQuestion(){
+        String[] resultat=new String[6];
+        CSVFile current=loadCSV("jeux/systeme de magie/question.csv",';');
+        int nbligne=rowCount(current);
+        int ligne=(int) random(0,nbligne);
+        for (int i=0;i<6;i++){
+            resultat[i]=getCell(current,ligne,i);
+        }
+        return resultat;
+    }
+
+//Permet d'afficher la question
+
+    void afficherQuestion(String[] question){
+        println(question[0]+"\n\n");
+        for (int i=0;i<4;i++){
+            println("["+i+"] "+question[i+1]);
+        }
+        println("");
+    }
+
+//Permet de poser une question, d'attendre une réponse et de retourner un boolean en foncion de la réponse
+
+    boolean question(){
+        String[] question=loadQuestion();
+        afficherQuestion(question);
+        int reponse=saisie(4);
+        if(equals(question[reponse+1],question[5])){
+            return true;
+        }
+        return false;
+    }
+
 }
