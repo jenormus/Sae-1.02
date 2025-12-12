@@ -94,6 +94,32 @@ class Main extends Program{
         return resultat;
     }
 
+    void loadPnj(String pnj,String num){
+        afficherMisc(loadSpritePNJ(pnj));
+        CSVFile current=loadCSV("jeux/entité/option pnj/quete.csv");
+        int ligne=0;
+        int colonne=0;
+        String rep="";
+        boolean encours=true;
+        while(getCell(current,ligne,colonne)=! pnj){
+            ligne++;
+        }
+        colonne=5;
+        while(encours){
+            if(!equals(getCell(current,ligne,colonne),num)){
+            ligne++;
+            }
+            else if(!equals(getCell(current,ligne,colonne),num) && ligne=rowCount(current)){
+                //appelle le dialogue qui dit degage
+                encours=false;
+            } else{
+                //appelle le dialogue qui dit quete 
+                println(getCell(current,ligne,colonne));
+                //loadquete(permetra de coller la quete au joueur)
+                encours=false;
+            }
+        }
+    }
 //Permet d'afficher la question
 
     void afficherQuestion(String[] question){
@@ -116,9 +142,28 @@ class Main extends Program{
         return false;
     }
 
-    User newUser(){
+    User newUser(String nom){
         User utilisateur = new User;
-        CSVFile current = 
+        CSVFile current = loadCSV("jeux/utilisateur/user.csv")
+        m.nom=nom;
+        m.pv_max=stringToInt(getCell(current,ligne,1));
+        m.pv=m.pv_max;
+        m.level=stringToInt(getCell(current,ligne,5));
     }
 
+    Monstre newMonstre(String nom){
+        int ligne=0;
+        int colonne=0;
+        while(getCell(current,ligne,colonne)=! nom){
+            ligne++;
+        }
+        Monstre m=new Monstre();
+        CSVFile current = loadCSV("jeux/entité/monstre.csv");
+        m.nom=nom;
+        m.pvmax=stringToInt(getCell(current,ligne,1));
+        m.pv=m.pvmax;
+        m.attaquenom=getCell(current,ligne,2);
+        m.attaquedegat=stringToInt(getCell(current,ligne,3));
+        m.esquive=stringToInt(getCell(current,ligne,4));
+    }
 }
