@@ -10,7 +10,7 @@ class Main extends Program{
     
 
     void commencer(){
-        afficherMisc("title");
+        //afficherMisc("title");
         print(question());
     }
 
@@ -69,8 +69,14 @@ class Main extends Program{
         CSVFile current=loadCSV("jeux/systeme de magie/question.csv",';');
         int nbligne=rowCount(current);
         int ligne=(int) random(0,nbligne);
-        for (int i=0;i<6;i++){
-            resultat[i]=getCell(current,ligne,i);
+        resultat[0]=getCell(current,ligne,0);
+        resultat[5]=getCell(current,ligne,1);
+        int pos;
+        for (int i=0;i<4;i++){
+            do{
+                pos =(int) random(1,5);
+            }while(resultat[pos]!=null);
+            resultat[pos]=getCell(current,ligne,1+i);
         }
         return resultat;
     }
