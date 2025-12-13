@@ -267,6 +267,29 @@ class Main extends Program {
 
         return m;
     }
+//////////////////////////////////////////////////////////////////////////
+// inventaire
+//////////////////////////////////////////////////////////////////////////
+void afficherinventaire(){
+    CSVFile current = loadCSV("jeux/utilisateur/ineventaire.csv", ';');
+    int ligne =0;
+    while(ligne<rowCount(current)){
+        println("["+ligne+"] "+getCell(current, ligne, 0));
+        ligne++;
+    }
+}
+
+void utiliserObjet(User nom,Monstr monstre){
+    CSVFile current = loadCSV("jeux/utilisateur/ineventaire.csv", ';');
+    afficherinventaire();
+    int ligne=readInt();
+    if(equals(getCell(current,ligne,1),"soins")){
+        nom.pv=nom.pv+getCell(current,ligne,2);
+    } else{
+        monstre.pv=monstre.pv-getCell(current,ligne,2);
+    }
+    
+}
 
 //////////////////////////////////////////////////////////////////////////
 // COMBAT
@@ -309,7 +332,7 @@ class Main extends Program {
                 }
             }
             else {
-                print("objets à faire");
+                utiliserObjet(personne,currentMonstre);
             }
 
             if (currentMonstre.pv > 0) {
