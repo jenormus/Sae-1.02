@@ -73,7 +73,15 @@ class Main extends Program {
     void afficherSpriteMonstre(String monstre) {
         println(loadSpriteMonstre(monstre));
     }
-
+//////////////////////////////////////////////////////////////////////////
+// zone de jeux
+//////////////////////////////////////////////////////////////////////////
+    Lieux newLieux(){
+        CSVFile current = loadCSV("jeux/entité/option pnj/quete.csv", ';');
+        Lieux l=new Lieux();
+        l.lieuxactuelle=new int[]{1,1};
+        
+    }
 //////////////////////////////////////////////////////////////////////////
 // SAISIES UTILISATEUR
 //////////////////////////////////////////////////////////////////////////
@@ -156,7 +164,7 @@ class Main extends Program {
             ligne++;
         }
 
-        int colonne = 5;
+        int colonne = 4;
 
         while (encours) {
             if (!equals(getCell(current, ligne, colonne), num)) {
@@ -168,10 +176,20 @@ class Main extends Program {
                 loadDialoguePNJ(pnj, false);
                 encours = false;
             }
-            else {
+            else if(equals(getCell(current, ligne, 5),"false")){
                 loadDialoguePNJ(pnj, true);
-                println(getCell(current, ligne, colonne));
+                loadquete(ligne);
+                println(getCell(current, ligne, 1));
+                
                 encours = false;
+            } else if(equals(getCell(current, ligne, 5),"true")){
+                if(verifierquete(ligne)){
+                    println("merci d'avoir accompli la mission vous trouverai une nouvelle mission chez"+getCell(current, ligne, 5));
+                    encours = false;
+                } else{
+                    println("Petit/Petite chenapan retourne travaillé");
+                    encours = false;
+                }
             }
         }
     }
@@ -244,7 +262,38 @@ class Main extends Program {
         };
         saveCSV(save, "jeux/utilisateur/sauvegarde.csv");
     }
+//////////////////////////////////////////////////////////////////////////
+// quete
+//////////////////////////////////////////////////////////////////////////
+void loadquete(int num){
+    CSVFile current = loadCSV("jeux/entité/option pnj/quete.csv", ';');
+    String[][] rep=new Stringrep[rowCount(quete)][columnCount(quete)];
+    for(int cptligne=0;cptligne<rowCount(quete);cptligne++){
+        for(int cptcolonne=0;cptcolonne<columnCount(quete);cptcolonne++){
+            if(cptligne==num && cptcolonne==5){ 
+                rep[cptligne][cptcolonne]="true";
+            }else{
+                rep[cptligne][cptcolonne]=getCell(quete,cptligne,cptcolonne);
+            }
+        }
+    }
+    saveCSV(rep,"jeux/entité/option pnj/quete.csv");
+    personne.quete_cible=getCell(current, num, 1);
+    personne.quete_kill=0;
+}
 
+boolean verifierquete(int num){
+    CSVFile current = loadCSV("jeux/entité/option pnj/quete.csv", ';');
+    if(personne.quete_kill>=stringToInt(getCell(current, num, 3))){
+        return true;
+    }
+    return false;
+}
+void verifiermonstretuer(String nom){
+    if(equals(nom,persone.quete_cible)){
+        personne.quete_kill++;
+    }
+}
 //////////////////////////////////////////////////////////////////////////
 // MONSTRES
 //////////////////////////////////////////////////////////////////////////
@@ -280,7 +329,7 @@ void afficherinventaire(){
 }
 
 void utiliserObjet(User nom,Monstr monstre){
-    CSVFile current = loadCSV("jeux/utilisateur/ineventaire.csv", ';');
+    CSVFile current = loadCSV("jeux/utilisateur/inventaire.csv", ';');
     afficherinventaire();
     int ligne=readInt();
     if(equals(getCell(current,ligne,1),"soins")){
@@ -289,6 +338,25 @@ void utiliserObjet(User nom,Monstr monstre){
         monstre.pv=monstre.pv-getCell(current,ligne,2);
     }
     
+}
+
+void ajouterobjet (String nom){
+    CSVFile current = loadCSV("jeux/utilisateur/objet.csv", ';');
+    CSVFile inventaire = loadCSV("jeux/utilisateur/inventaire.csv", ';');
+    int ligne=0;
+    String [][] rep=new String[rowCount(inventaire)+1][columnCount(inventaire)];
+    while(!equals(getCell(current,ligne,0),nom)){
+        ligne++;
+    }
+    for(int cptligne=0;cptligne<rowCount(inventaire);cptligne++){
+        for(int cptcolonne=0;cptcolonne<columnCount(inventaire);cptcolonne++){
+            rep[cptligne][cptcolonne]=getCell(inventaire,cptligne,cptcolonne);
+        }
+    }
+    for(int cptcolonne=0;cptcolonne<columnCount(inventaire);cptcolonne++0){
+        rep[rowCount(inventaire)+1][cptcolonne]=getCell(current,ligne,cptcolonne)
+    }
+    saveCSV(rep,"jeux/utilisateur/inventaire.csv");
 }
 
 //////////////////////////////////////////////////////////////////////////
