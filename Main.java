@@ -184,7 +184,7 @@ class Main extends Program {
                 encours = false;
             } else if(equals(getCell(current, ligne, 5),"true")){
                 if(verifierquete(ligne)){
-                    println("merci d'avoir accompli la mission vous trouverai une nouvelle mission chez"+getCell(current, ligne, 5));
+                    println("merci d'avoir accompli la mission vous trouverai une nouvelle mission chez"+getCell(current, ligne, 6));
                     encours = false;
                 } else{
                     println("Petit/Petite chenapan retourne travaillé");
