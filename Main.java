@@ -218,4 +218,63 @@ class Main extends Program{
         m.esquive=stringToInt(getCell(current,ligne,4));
     }
 
+//fonction qui permet d'afficher les possibilités d'attaque, demande un choix à l'utilisateur et renvoie soit le nom de l'attaque soit "annuler" en fonction du choix (pour sortir du menu)
+
+    String demanderAttaque(String[] attaquePossibles){
+        int page=0;
+        int nbPages = (length(attaquePossibles)+8-1)/8;
+        while (true) {
+            int debut = page * 8;
+            int end = debut + 8;
+            if (end > length(attaquePossibles)){
+                end = length(attaquePossibles);
+            }
+            for (int i=debut;i<end;i++) {
+                println("["+(i-debut)+"] " + attaquePossibles[i]);
+            }
+            if (nbPages!=1){
+                println("["+(end-debut)+"] Suivant");
+                println("["+(end-debut+1)+"] Annuler");
+            } else {
+                println("["+(end-debut)+"] Annuler");
+            }
+            int reponse = saisie(end-debut+1);
+            if (nbPages!=1){
+                if (reponse==end-debut+1) {
+                    return "annuler";
+                }
+            } else {
+                if (reponse==end-debut) {
+                    return "annuler";
+                }
+            }
+            if (reponse==end-debut) {
+                page++;
+                if (page*8>=length(attaquePossibles)) {
+                    page = 0;
+                }
+            }
+            if (reponse>=0 && reponse<end-debut) {
+                return attaquePossibles[debut + reponse];
+            }
+        }
+    }
+
+//fonction à appeller facilement pour lancer l'action de l'attaque
+
+    String attaque(){
+        CSVFile current = loadCSV("jeux/sysyteme de magie/possibilite attaque.csv",';');
+        String[] attaquePossibles = new String[rowCount(current)];
+        int cpt=0;
+        while (cpt<length(attaquePossibles) && stringToInt(getCell(current,cpt,2))<=personne.level){
+            cpt++;
+        }
+        String[] attaquePossiblesClean = new String[cpt];
+        for (int i=0;i<cpt;i++){
+            attaquePossiblesClean[i]=getCell(current,i,0);
+        }
+        String choixAttaque = demanderAttaque(attaquePossiblesClean);
+        return choixAttaque; 
+    }
+
 }
