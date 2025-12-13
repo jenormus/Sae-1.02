@@ -96,6 +96,32 @@ class Main extends Program{
         return resultat;
     }
 
+    void loadPnj(String pnj,String num){
+        afficherMisc(loadSpritePNJ(pnj));
+        CSVFile current=loadCSV("jeux/entité/option pnj/quete.csv");
+        int ligne=0;
+        int colonne=0;
+        String rep="";
+        boolean encours=true;
+        while(getCell(current,ligne,colonne)=! pnj){
+            ligne++;
+        }
+        colonne=5;
+        while(encours){
+            if(!equals(getCell(current,ligne,colonne),num)){
+            ligne++;
+            }
+            else if(!equals(getCell(current,ligne,colonne),num) && ligne=rowCount(current)){
+                //appelle le dialogue qui dit degage
+                encours=false;
+            } else{
+                //appelle le dialogue qui dit quete 
+                println(getCell(current,ligne,colonne));
+                //loadquete(permetra de coller la quete au joueur)
+                encours=false;
+            }
+        }
+    }
 //Permet d'afficher la question
 
     void afficherQuestion(String[] question){
@@ -139,17 +165,20 @@ class Main extends Program{
         return utilisateur;
     }
 
-    String askNom(){
-        println("Il me semble que c'est la première fois que l'on se voit ici, comment t'appelles-tu ?\n");
-        return saisieTexte();
-
-    }
-
-    void print(User utilisateur){
-        println("nom = "+utilisateur.nom);
-        println("vie = "+utilisateur.pv+":"+utilisateur.pv_max);
-        println("level = "+utilisateur.level);
-        println("quete = "+utilisateur.quete_kill+utilisateur.quete_cible+"tués");
+    Monstre newMonstre(String nom){
+        int ligne=0;
+        int colonne=0;
+        while(getCell(current,ligne,colonne)=! nom){
+            ligne++;
+        }
+        Monstre m=new Monstre();
+        CSVFile current = loadCSV("jeux/entité/monstre.csv");
+        m.nom=nom;
+        m.pvmax=stringToInt(getCell(current,ligne,1));
+        m.pv=m.pvmax;
+        m.attaquenom=getCell(current,ligne,2);
+        m.attaquedegat=stringToInt(getCell(current,ligne,3));
+        m.esquive=stringToInt(getCell(current,ligne,4));
     }
 
 }
