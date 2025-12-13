@@ -1,7 +1,7 @@
 import extensions.File;
 import extensions .CSVFile;
 
-class Main extends Program{
+class AvantGout extends Program{
 
     User personne = newUser();
 
@@ -105,7 +105,7 @@ class Main extends Program{
     String[] loadQuestion(){
         String[] resultat=new String[6];
         CSVFile current=loadCSV("jeux/systeme de magie/question.csv",';');
-        int nbligne=rowCount(current);
+        int nbligne=rowCount(current)-1;
         int ligne=(int) random(0,nbligne);
         resultat[0]=getCell(current,ligne,0);
         resultat[5]=getCell(current,ligne,1);
@@ -118,36 +118,6 @@ class Main extends Program{
         }
         return resultat;
     }
-
-///////  STP FAIT CELUI LA J'AI RIEN COMPRIS A CE QUE TU VOULAIS FAIRE /////////
-
-/*    void loadPnj(String pnj,String num){
-        afficherSpritePNJ(pnj);
-        CSVFile current=loadCSV("jeux/entité/option pnj/quete.csv",';');
-        int ligne=0;
-        String rep="";
-        boolean encours=true;
-        while(getCell(current,ligne,0)!= pnj){
-            ligne++;
-        }
-        int colonne=5;
-        while(encours){
-            if(!equals(getCell(current,ligne,colonne),num)){
-                ligne++;
-            }
-            else if(!equals(getCell(current,ligne,colonne),num) && ligne=rowCount(current)){
-                loadDialoguePNJ(pnj,false);
-                encours=false;
-            } else{
-                loadDialoguePNJ(pnj,true);
-                println(getCell(current,ligne,colonne));
-                //loadquete(permetra de coller la quete au joueur)
-                encours=false;
-            }
-        }
-    }
-*/
-
 //Permet d'afficher la question
 
     void afficherQuestion(String[] question){
@@ -316,7 +286,6 @@ class Main extends Program{
                     if (random<=currentMonstre.esquive){
                         println("Cependant le(a)"+currentMonstre.nom+" a réussi à esquiver !\n");
                     } else {
-                        println("Vous avez infligé "+degats+" dégats !\n");
                         currentMonstre.pv=currentMonstre.pv-degats;
                     }
                 }
