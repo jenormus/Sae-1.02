@@ -3,6 +3,8 @@ import extensions .CSVFile;
 
 class Main extends Program{
 
+    User personne = newUser();
+
     void algorithm(){
         commencer();
     }
@@ -12,7 +14,6 @@ class Main extends Program{
     void commencer(){
         afficherMisc("title");
         User joueur = newUser();
-        print(joueur);
     }
 
 //Charge les images textes//
@@ -41,8 +42,24 @@ class Main extends Program{
         return loadImage("jeux/entité/Ascii misc/"+misc+".txt");
     }
 
+    String loadDialoguePNJ(String pnj,boolean quete){
+        CSVFile current = loadCSV("jeux/option pnj/dialogue.csv",';');
+        int ligne = 0;
+        while (!equals(getCell(current,ligne,0),pnj)){
+            ligne++;
+        }
+        if (quete){
+            return getCell(current,ligne,1);
+        }
+        return getCell(current,ligne,2);
+    }
+
     void afficherMisc(String image){
         println(loadSpriteMisc(image));
+    }
+
+    void afficherSpritePNJ(String pnj){
+        println(loadSpritePNJ(pnj));
     }
 
 //////////////////////////////////////////////////////////////////////////
@@ -62,6 +79,8 @@ class Main extends Program{
         }while(trigger);
         return charAt(resultat,0)-'0';
     }
+
+//Permet à l'utilisateur d'entrer une chaine de caractères (cas de réessaye si chaine vide)
 
     String saisieTexte(){
         String resultat;
@@ -96,26 +115,27 @@ class Main extends Program{
         return resultat;
     }
 
+///////  STP FAIT CELUI LA J'AI RIEN COMPRIS A CE QUE TU VOULAIS FAIRE /////////
+
     void loadPnj(String pnj,String num){
-        afficherMisc(loadSpritePNJ(pnj));
-        CSVFile current=loadCSV("jeux/entité/option pnj/quete.csv");
+        afficherSpritePNJ(pnj);
+        CSVFile current=loadCSV("jeux/entité/option pnj/quete.csv",';');
         int ligne=0;
-        int colonne=0;
         String rep="";
         boolean encours=true;
-        while(getCell(current,ligne,colonne)=! pnj){
+        while(getCell(current,ligne,0)!= pnj){
             ligne++;
         }
-        colonne=5;
+        int colonne=5;
         while(encours){
             if(!equals(getCell(current,ligne,colonne),num)){
-            ligne++;
+                ligne++;
             }
             else if(!equals(getCell(current,ligne,colonne),num) && ligne=rowCount(current)){
-                //appelle le dialogue qui dit degage
+                loadDialoguePNJ(pnj,false);
                 encours=false;
             } else{
-                //appelle le dialogue qui dit quete 
+                loadDialoguePNJ(pnj,true);
                 println(getCell(current,ligne,colonne));
                 //loadquete(permetra de coller la quete au joueur)
                 encours=false;
@@ -144,6 +164,8 @@ class Main extends Program{
         return false;
     }
 
+//Permet de créer un élément de type User qui chargera soit les valeurs du fichier Sauvegarde soit les valeurs par défaut et den demandant le nom de la personne via la fonction "askNom()"
+
     User newUser(){
         User utilisateur = new User();
         CSVFile current = loadCSV("jeux/utilisateur/sauvegarde.csv",';');
@@ -165,19 +187,34 @@ class Main extends Program{
         return utilisateur;
     }
 
+//Demande le nom de l'utilisateur et retourne un String
+
+    String askNom(){
+        println("Vous me semblez nouveau/nouvelle ici, je ne crois pas être familier avec votre nom, pourriez vous me le donner ?");
+        return saisieTexte();
+    }
+
+//Overwrite le fichier actuel de sauvegarde pour mettre les nouvelles données
+
+    void sauvegarder(){
+        String[][] save = new String[][] {{personne.nom},{personne.pv+"",personne.pv_max+""},{personne.level+""},{personne.quete_cible,personne.quete_kill+""}};
+        saveCSV(save,"jeux/utilisateur/sauvegarde.csv");
+    }
+
+//créer un monstre ayant ses statistiques venant du fichier "monstre.csv"
+
     Monstre newMonstre(String nom){
         int ligne=0;
-        int colonne=0;
-        while(getCell(current,ligne,colonne)=! nom){
+        CSVFile current = loadCSV("jeux/entité/monstre.csv",';');
+        while(equals(getCell(current,ligne,0),nom)){
             ligne++;
         }
         Monstre m=new Monstre();
-        CSVFile current = loadCSV("jeux/entité/monstre.csv");
         m.nom=nom;
-        m.pvmax=stringToInt(getCell(current,ligne,1));
+        m.pvmax=stringToInt(getCell(current,ligne,1))*((int) (personne.level*0.20));
         m.pv=m.pvmax;
         m.attaquenom=getCell(current,ligne,2);
-        m.attaquedegat=stringToInt(getCell(current,ligne,3));
+        m.attaquedegat=stringToInt(getCell(current,ligne,3))*((int) (personne.level*0.10));
         m.esquive=stringToInt(getCell(current,ligne,4));
     }
 

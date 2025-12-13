@@ -2,7 +2,7 @@ class Monstre{
     String nom;
     int pvmax;
     int pv;
-    int attaquenom;
+    String attaquenom;
     int attaquedegat;
     int esquive;
 }
