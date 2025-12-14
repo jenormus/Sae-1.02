@@ -14,8 +14,7 @@ class Main extends Program {
     }
 
     void commencer() {
-        afficherMisc("title");
-        combat("wolf");
+        deplacement("Hall");
     }
 
 //////////////////////////////////////////////////////////////////////////
@@ -308,10 +307,10 @@ void verifiermonstretuer(String nom){
 
         Monstre m = new Monstre();
         m.nom = nom;
-        m.pvmax = stringToInt(getCell(current, ligne, 1)) * ((int)(personne.level * 1.20));
+        m.pvmax = stringToInt(getCell(current, ligne, 1)) * (int)((1+(personne.level* 0.2)));
         m.pv = m.pvmax;
         m.attaquenom = getCell(current, ligne, 2);
-        m.attaquedegat = stringToInt(getCell(current, ligne, 3)) * ((int)(personne.level * 1.10));
+        m.attaquedegat = stringToInt(getCell(current, ligne, 3)) * (int)(1+(personne.level * 0.10));
         m.esquive = stringToInt(getCell(current, ligne, 4));
 
         return m;
@@ -328,7 +327,7 @@ void afficherinventaire(){
     }
 }
 
-void utiliserObjet(User nom,Monstr monstre){
+void utiliserObjet(User nom,Monstre monstre){
     CSVFile current = loadCSV("jeux/utilisateur/inventaire.csv", ';');
     afficherinventaire();
     int ligne=readInt();
@@ -353,8 +352,8 @@ void ajouterobjet (String nom){
             rep[cptligne][cptcolonne]=getCell(inventaire,cptligne,cptcolonne);
         }
     }
-    for(int cptcolonne=0;cptcolonne<columnCount(inventaire);cptcolonne++0){
-        rep[rowCount(inventaire)+1][cptcolonne]=getCell(current,ligne,cptcolonne)
+    for(int cptcolonne=0;cptcolonne<columnCount(inventaire);cptcolonne++){
+        rep[rowCount(inventaire)+1][cptcolonne]=getCell(current,ligne,cptcolonne);
     }
     saveCSV(rep,"jeux/utilisateur/inventaire.csv");
 }
@@ -413,10 +412,7 @@ void ajouterobjet (String nom){
             else {
                 println("Bravo vous vous en sortez sain et sauf\n");
                 afficherMisc("victoire");
-
-                if (equals(currentMonstre.nom, personne.quete_cible)) {
-                    personne.quete_kill++;
-                }
+                verifiermonstretuer(currentMonstre.nom);
                 return true;
             }
 
@@ -427,4 +423,28 @@ void ajouterobjet (String nom){
             }
         }
     }
+
+    void deplacement(String currentlieu){
+        CSVFile lieu = loadCSV("jeux/deplacement.csv",';');
+        int cpt=0;
+        while(!quals(getCell(lieu,0,cpt),currentlieu)){
+            cpt++;
+        }
+        int nbelements = (int) (rowCount(lieu,cpt)/2);
+        println("Déplacments :\n");
+        for (int i=1;i<=nbelements;i++){
+            println(getCell(lieu,cpt,i*2)+" - "+getCell(lieu,cpt,i*2+1));
+        }
+        int action = saisie(nbelements-1);
+        if(equals(getCell(lieu,cpt,(action+1)*2),"lieu")){
+            deplacement(getCell(lieu,cpt,action*2+1));
+        } else if(equals(getCell(lieu,cpt,action*2),"pnj")){
+            loadPnj(getCell(lieu,cpt,action*2+1));
+        } else if(equals(getCell(lieu,cpt,action*2),"monstre")){
+            combat(getCell(lieu,cpt,action*2+1));
+        } else {
+            println("erreur");
+        }
+    }
+
 }
