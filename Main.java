@@ -76,6 +76,7 @@ class Main extends Program {
 // zone de jeux
 //////////////////////////////////////////////////////////////////////////
     
+<<<<<<< HEAD
     void deplacement(String currentlieu){
         CSVFile lieu = loadCSV("jeux/deplacement.csv",';');
         int cpt=0;
@@ -99,6 +100,8 @@ class Main extends Program {
         }
     }
 
+=======
+>>>>>>> 38be9fee241715223ad0acb845d5f7f7516121c5
 //////////////////////////////////////////////////////////////////////////
 // SAISIES UTILISATEUR
 //////////////////////////////////////////////////////////////////////////
