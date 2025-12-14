@@ -151,7 +151,7 @@ class Main extends Program {
 // PNJ
 //////////////////////////////////////////////////////////////////////////
 
-    void loadPnj(String pnj, String num) {
+    void loadPnj(String pnj) {
         afficherSpritePNJ(pnj);
 
         CSVFile current = loadCSV("jeux/entité/option pnj/quete.csv", ';');
@@ -166,23 +166,23 @@ class Main extends Program {
         int colonne = 4;
 
         while (encours) {
-            if (!equals(getCell(current, ligne, colonne), num)) {
+            if (stringToInt(getCell(current, ligne, colonne))==personne.level) {
                 ligne++;
             }
-            else if (!equals(getCell(current, ligne, colonne), num)
-                     && ligne = rowCount(current)) {
+            else if (stringToInt(getCell(current, ligne, colonne))==personne.level
+                     && ligne == rowCount(current)) {
 
                 loadDialoguePNJ(pnj, false);
                 encours = false;
             }
             else if(equals(getCell(current, ligne, 5),"false")){
                 loadDialoguePNJ(pnj, true);
-                loadquete(ligne);
+                loadquete();
                 println(getCell(current, ligne, 1));
                 
                 encours = false;
             } else if(equals(getCell(current, ligne, 5),"true")){
-                if(verifierquete(ligne)){
+                if(verifierquete()){
                     println("merci d'avoir accompli la mission vous trouverai une nouvelle mission chez"+getCell(current, ligne, 6));
                     encours = false;
                 } else{
@@ -264,12 +264,12 @@ class Main extends Program {
 //////////////////////////////////////////////////////////////////////////
 // quete
 //////////////////////////////////////////////////////////////////////////
-void loadquete(int num){
-    CSVFile current = loadCSV("jeux/entité/option pnj/quete.csv", ';');
-    String[][] rep=new Stringrep[rowCount(quete)][columnCount(quete)];
+void loadquete(){
+    CSVFile quete = loadCSV("jeux/entité/option pnj/quete.csv", ';');
+    String[][] rep=new String[rowCount(quete)][columnCount(quete)];
     for(int cptligne=0;cptligne<rowCount(quete);cptligne++){
         for(int cptcolonne=0;cptcolonne<columnCount(quete);cptcolonne++){
-            if(cptligne==num && cptcolonne==5){ 
+            if(cptligne==personne.level && cptcolonne==5){ 
                 rep[cptligne][cptcolonne]="true";
             }else{
                 rep[cptligne][cptcolonne]=getCell(quete,cptligne,cptcolonne);
@@ -277,19 +277,19 @@ void loadquete(int num){
         }
     }
     saveCSV(rep,"jeux/entité/option pnj/quete.csv");
-    personne.quete_cible=getCell(current, num, 1);
+    personne.quete_cible=getCell(quete, personne.level , 1);
     personne.quete_kill=0;
 }
 
-boolean verifierquete(int num){
+boolean verifierquete(){
     CSVFile current = loadCSV("jeux/entité/option pnj/quete.csv", ';');
-    if(personne.quete_kill>=stringToInt(getCell(current, num, 3))){
+    if(personne.quete_kill>=stringToInt(getCell(current, personne.level, 3))){
         return true;
     }
     return false;
 }
 void verifiermonstretuer(String nom){
-    if(equals(nom,persone.quete_cible)){
+    if(equals(nom,personne.quete_cible)){
         personne.quete_kill++;
     }
 }
@@ -332,9 +332,9 @@ void utiliserObjet(User nom,Monstre monstre){
     afficherinventaire();
     int ligne=readInt();
     if(equals(getCell(current,ligne,1),"soins")){
-        nom.pv=nom.pv+getCell(current,ligne,2);
+        nom.pv=nom.pv+stringToInt(getCell(current,ligne,2));
     } else{
-        monstre.pv=monstre.pv-getCell(current,ligne,2);
+        monstre.pv=monstre.pv-stringToInt(getCell(current,ligne,2));
     }
     
 }
@@ -495,7 +495,7 @@ void ajouterobjet (String nom){
     void deplacement(String currentlieu){
         CSVFile lieu = loadCSV("jeux/deplacement.csv",';');
         int cpt=0;
-        while(!quals(getCell(lieu,0,cpt),currentlieu)){
+        while(!equals(getCell(lieu,0,cpt),currentlieu)){
             cpt++;
         }
         int nbelements = (int) (rowCount(lieu,cpt)/2);
