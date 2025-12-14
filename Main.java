@@ -75,12 +75,30 @@ class Main extends Program {
 //////////////////////////////////////////////////////////////////////////
 // zone de jeux
 //////////////////////////////////////////////////////////////////////////
-    Lieux newLieux(){
-        CSVFile current = loadCSV("jeux/entité/option pnj/quete.csv", ';');
-        Lieux l=new Lieux();
-        l.lieuxactuelle=new int[]{1,1};
-        
+    
+    void deplacement(String currentlieu){
+        CSVFile lieu = loadCSV("jeux/deplacement.csv",';');
+        int cpt=0;
+        while(!equals(getCell(lieu,0,cpt),currentlieu)){
+            cpt++;
+        }
+        int nbelements = (columnCount(lieu,cpt)/2);
+        println("Action(s) :\n");
+        for (int i=0;i<nbelements;i++){
+            println("["+i+"] "+getCell(lieu,cpt,((i+1)*2)-1)+" - "+getCell(lieu,cpt,((i+1)*2)));
+        }
+        int action = saisie(nbelements-1);
+        if(equals(getCell(lieu,cpt,((action+1)*2)-1),"lieu")){
+            deplacement(getCell(lieu,cpt,(action+1)*2));
+        } else if(equals(getCell(lieu,cpt,((action+1)*2)-1),"pnj")){
+            loadPnj(getCell(lieu,cpt,(action+1)*2));
+        } else if(equals(getCell(lieu,cpt,((action+1)*2)-1),"monstre")){
+            combat(getCell(lieu,cpt,(action+1)*2));
+        } else {
+            println("erreur");
+        }
     }
+
 //////////////////////////////////////////////////////////////////////////
 // SAISIES UTILISATEUR
 //////////////////////////////////////////////////////////////////////////
@@ -489,29 +507,6 @@ void ajouterobjet (String nom){
                 afficherMisc("mort_joueur");
                 return false;
             }
-        }
-    }
-
-    void deplacement(String currentlieu){
-        CSVFile lieu = loadCSV("jeux/deplacement.csv",';');
-        int cpt=0;
-        while(!equals(getCell(lieu,0,cpt),currentlieu)){
-            cpt++;
-        }
-        int nbelements = (columnCount(lieu,cpt)/2);
-        println("Déplacments :\n");
-        for (int i=0;i<=nbelements;i++){
-            println("["+i+"] "+getCell(lieu,cpt,((i+1)*2)-1)+" - "+getCell(lieu,cpt,((i+1)*2)));
-        }
-        int action = saisie(nbelements-1);
-        if(equals(getCell(lieu,cpt,((action+1)*2)-1),"lieu")){
-            deplacement(getCell(lieu,cpt,(action+1)*2));
-        } else if(equals(getCell(lieu,cpt,((action+1)*2)-1),"pnj")){
-            loadPnj(getCell(lieu,cpt,(action+1)*2));
-        } else if(equals(getCell(lieu,cpt,((action+1)*2)-1),"monstre")){
-            combat(getCell(lieu,cpt,(action+1)*2));
-        } else {
-            println("erreur");
         }
     }
 
