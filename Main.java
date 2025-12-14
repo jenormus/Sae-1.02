@@ -10,11 +10,36 @@ class Main extends Program {
     User personne = newUser();
 
     void algorithm() {
-        commencer();
+        jeux();
     }
 
-    void commencer() {
-        deplacement("Hall");
+    void jeux() {
+        afficherMisc("title");
+        print("\n[0]Nouvelle Partie\n[1]Continuer\n[2]Crédits");
+        int rep=saisie(2);
+        if(rep==0){
+            String[][] save = {
+            { "" },
+            { 100 + "", 100 + "" },
+            { 0 + "" },
+            { "", 0 + "" },
+            {"Hall"}
+        };
+        saveCSV(save, "jeux/utilisateur/sauvegarde.csv");
+        personne = newUser();
+        deplacement(personne.currentlieu);
+        } else if(rep==1){
+            deplacement(personne.currentlieu);
+        } else if(rep==2){
+            Credit();
+        }
+    }
+    void Credit(){
+        File credit= newFile("credit.txt");
+        while(ready(credit)){
+            println(readLine(credit));
+            sleep(1000);
+        }
     }
 
 //////////////////////////////////////////////////////////////////////////
@@ -77,25 +102,30 @@ class Main extends Program {
 //////////////////////////////////////////////////////////////////////////
     
     void deplacement(String currentlieu){
-        CSVFile lieu = loadCSV("jeux/deplacement.csv",';');
-        int cpt=0;
-        while(!equals(getCell(lieu,cpt,0),currentlieu)){
-            cpt++;
-        }
-        int nbelements = (columnCount(lieu,cpt)/2);
-        println("Action(s) :\n");
-        for (int i=0;i<nbelements;i++){
-            println("["+i+"] "+getCell(lieu,cpt,((i+1)*2)-1)+" - "+getCell(lieu,cpt,((i+1)*2)));
-        }
-        int action = saisie(nbelements-1);
-        if(equals(getCell(lieu,cpt,((action+1)*2)-1),"lieu")){
-            deplacement(getCell(lieu,cpt,(action+1)*2));
-        } else if(equals(getCell(lieu,cpt,((action+1)*2)-1),"pnj")){
-            loadPnj(getCell(lieu,cpt,(action+1)*2));
-        } else if(equals(getCell(lieu,cpt,((action+1)*2)-1),"monstre")){
-            combat(getCell(lieu,cpt,(action+1)*2));
+        if(personne.level>=10){
+            println("Merci d'avoir jouer a notre magnifique jeux qui vaut surement un 20/20");
+            Credit();
         } else {
-            println("erreur");
+            CSVFile lieu = loadCSV("jeux/deplacement.csv",';');
+            int cpt=0;
+            while(!equals(getCell(lieu,cpt,0),currentlieu)){
+                cpt++;
+            }
+            int nbelements = (columnCount(lieu,cpt)/2);
+            println("Action(s) :\n");
+            for (int i=0;i<nbelements;i++){
+                println("["+i+"] "+getCell(lieu,cpt,((i+1)*2)-1)+" - "+getCell(lieu,cpt,((i+1)*2)));
+            }
+            int action = saisie(nbelements-1);
+            if(equals(getCell(lieu,cpt,((action+1)*2)-1),"lieu")){
+                deplacement(getCell(lieu,cpt,(action+1)*2));
+            } else if(equals(getCell(lieu,cpt,((action+1)*2)-1),"pnj")){
+                loadPnj(getCell(lieu,cpt,(action+1)*2));
+            } else if(equals(getCell(lieu,cpt,((action+1)*2)-1),"monstre")){
+                combat(getCell(lieu,cpt,(action+1)*2));
+            } else {
+                println("erreur");
+            }
         }
     }
 
@@ -176,7 +206,6 @@ class Main extends Program {
         int ligne = 0;
         String rep = "";
         boolean encours = true;
-
         while (!(equals(getCell(current, ligne, 0),pnj))) {
             ligne++;
         }
@@ -193,7 +222,7 @@ class Main extends Program {
             } else if(equals(getCell(current, ligne, 5),"false")){
                 loadDialoguePNJ(pnj, true);
                 loadquete();
-                println(getCell(current, ligne, 1));
+                println(getCell(current, ligne, 1)+" "+getCell(current, ligne, 3)+" "+getCell(current, ligne, 2));
                 
                 encours = false;
             } else if(equals(getCell(current, ligne, 5),"true")){
@@ -206,6 +235,7 @@ class Main extends Program {
                 }
             }
         }
+        deplacement(personne.currentlieu);
     }
 
 //////////////////////////////////////////////////////////////////////////
@@ -258,7 +288,7 @@ class Main extends Program {
         utilisateur.level = stringToInt(getCell(current, 2, 0));
         utilisateur.pv = stringToInt(getCell(current, 1, 0));
         utilisateur.pv_max = stringToInt(getCell(current, 1, 1));
-
+        utilisateur.currentlieu = getCell(current, 4, 0);
         return utilisateur;
     }
 
@@ -280,19 +310,21 @@ class Main extends Program {
 // quete
 //////////////////////////////////////////////////////////////////////////
 void loadquete(){
-    CSVFile quete = loadCSV("jeux/entité/option pnj/quete.csv", ';');
+    CSVFile quete = loadCSV("jeux/entité/option pnj/quete.csv",';');
     String[][] rep=new String[rowCount(quete)][columnCount(quete)];
+    int ligne=0;
     for(int cptligne=0;cptligne<rowCount(quete);cptligne++){
         for(int cptcolonne=0;cptcolonne<columnCount(quete);cptcolonne++){
-            if(cptligne==personne.level && cptcolonne==5){ 
+            if(cptcolonne==5 && stringToInt(getCell(quete,cptligne,4))==personne.level){ 
                 rep[cptligne][cptcolonne]="true";
+                ligne=cptligne;
             }else{
                 rep[cptligne][cptcolonne]=getCell(quete,cptligne,cptcolonne);
             }
         }
     }
-    saveCSV(rep,"jeux/entité/option pnj/quete.csv");
-    personne.quete_cible=getCell(quete, personne.level , 1);
+    saveCSV(rep,"jeux/entité/option pnj/quete.csv",';');
+    personne.quete_cible=getCell(quete,ligne, 2);
     personne.quete_kill=0;
 }
 
