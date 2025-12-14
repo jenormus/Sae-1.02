@@ -79,7 +79,7 @@ class Main extends Program {
     void deplacement(String currentlieu){
         CSVFile lieu = loadCSV("jeux/deplacement.csv",';');
         int cpt=0;
-        while(!equals(getCell(lieu,0,cpt),currentlieu)){
+        while(!equals(getCell(lieu,cpt,0),currentlieu)){
             cpt++;
         }
         int nbelements = (columnCount(lieu,cpt)/2);
