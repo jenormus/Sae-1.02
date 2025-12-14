@@ -495,21 +495,21 @@ void ajouterobjet (String nom){
     void deplacement(String currentlieu){
         CSVFile lieu = loadCSV("jeux/deplacement.csv",';');
         int cpt=0;
-        while(!quals(getCell(lieu,0,cpt),currentlieu)){
+        while(!equals(getCell(lieu,0,cpt),currentlieu)){
             cpt++;
         }
-        int nbelements = (int) (rowCount(lieu,cpt)/2);
+        int nbelements = (columnCount(lieu,cpt)/2);
         println("Déplacments :\n");
-        for (int i=1;i<=nbelements;i++){
-            println(getCell(lieu,cpt,i*2)+" - "+getCell(lieu,cpt,i*2+1));
+        for (int i=0;i<=nbelements;i++){
+            println("["+i+"] "+getCell(lieu,cpt,((i+1)*2)-1)+" - "+getCell(lieu,cpt,((i+1)*2)));
         }
         int action = saisie(nbelements-1);
-        if(equals(getCell(lieu,cpt,(action+1)*2),"lieu")){
-            deplacement(getCell(lieu,cpt,action*2+1));
-        } else if(equals(getCell(lieu,cpt,action*2),"pnj")){
-            loadPnj(getCell(lieu,cpt,action*2+1));
-        } else if(equals(getCell(lieu,cpt,action*2),"monstre")){
-            combat(getCell(lieu,cpt,action*2+1));
+        if(equals(getCell(lieu,cpt,((action+1)*2)-1),"lieu")){
+            deplacement(getCell(lieu,cpt,(action+1)*2));
+        } else if(equals(getCell(lieu,cpt,((action+1)*2)-1),"pnj")){
+            loadPnj(getCell(lieu,cpt,(action+1)*2));
+        } else if(equals(getCell(lieu,cpt,((action+1)*2)-1),"monstre")){
+            combat(getCell(lieu,cpt,(action+1)*2));
         } else {
             println("erreur");
         }
