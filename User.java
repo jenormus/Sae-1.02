@@ -5,4 +5,5 @@ class User{
     int pv_max;
     String quete_cible;
     int quete_kill;
+    String currentlieu;
 }
