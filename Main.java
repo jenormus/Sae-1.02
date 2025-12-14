@@ -15,9 +15,10 @@ class Main extends Program {
 
     void jeux() {
         afficherMisc("title");
-        print("\n[0]Nouvelle Partie\n[1]Continuer\n[2]Crédits");
-        int rep=saisie(2);
-        if(rep==0){
+        print("\n[0]Continuer : \n[1]Crédits : \n\n");
+        int rep=saisie(1);
+        //A faire "Nouvelle partie"
+        /*if(rep==0){
             String[][] save = {
             { "" },
             { 100 + "", 100 + "" },
@@ -27,10 +28,10 @@ class Main extends Program {
         };
         saveCSV(save, "jeux/utilisateur/sauvegarde.csv");
         personne = newUser();
-        deplacement(personne.currentlieu);
+        menu();
+        } else */if(rep==0){
+            menu();
         } else if(rep==1){
-            deplacement(personne.currentlieu);
-        } else if(rep==2){
             Credit();
         }
     }
@@ -40,6 +41,7 @@ class Main extends Program {
             println(readLine(credit));
             sleep(1000);
         }
+        jeux();
     }
 
 //////////////////////////////////////////////////////////////////////////
@@ -101,30 +103,44 @@ class Main extends Program {
 // zone de jeux
 //////////////////////////////////////////////////////////////////////////
     
-    void deplacement(String currentlieu){
-        if(personne.level>=10){
-            println("Merci d'avoir jouer a notre magnifique jeux qui vaut surement un 20/20");
-            Credit();
-        } else {
-            CSVFile lieu = loadCSV("jeux/deplacement.csv",';');
-            int cpt=0;
-            while(!equals(getCell(lieu,cpt,0),currentlieu)){
-                cpt++;
-            }
-            int nbelements = (columnCount(lieu,cpt)/2);
-            println("Action(s) :\n");
-            for (int i=0;i<nbelements;i++){
-                println("["+i+"] "+getCell(lieu,cpt,((i+1)*2)-1)+" - "+getCell(lieu,cpt,((i+1)*2)));
-            }
-            int action = saisie(nbelements-1);
-            if(equals(getCell(lieu,cpt,((action+1)*2)-1),"lieu")){
-                deplacement(getCell(lieu,cpt,(action+1)*2));
-            } else if(equals(getCell(lieu,cpt,((action+1)*2)-1),"pnj")){
-                loadPnj(getCell(lieu,cpt,(action+1)*2));
-            } else if(equals(getCell(lieu,cpt,((action+1)*2)-1),"monstre")){
-                combat(getCell(lieu,cpt,(action+1)*2));
+    void menu(){
+        boolean ingame = true;
+        while (ingame){
+            if(personne.level>=10){
+                ingame = false;
+                println("Merci d'avoir jouer a notre magnifique jeux qui vaut surement un 20/20");
+                Credit();
             } else {
-                println("erreur");
+                CSVFile lieu = loadCSV("jeux/deplacement.csv",';');
+                int cpt=0;
+                while(!equals(getCell(lieu,cpt,0),personne.currentlieu)){
+                    cpt++;
+                }
+                int nbelements = (columnCount(lieu,cpt)/2);
+                println("Action(s) :\n");
+                for (int i=0;i<nbelements;i++){
+                    println("["+i+"] "+getCell(lieu,cpt,((i+1)*2)-1)+" - "+getCell(lieu,cpt,((i+1)*2)));
+                }
+                println("\n["+nbelements+"] Sauvegarder et Quitter");
+
+                //emplacement pour inventaire ici
+                
+                println("");
+                int action = saisie(nbelements);
+                if(action == nbelements){
+                    sauvegarder();
+                    ingame = false;
+                //"else if" pour l'inventaire a ajouter 
+                } else if(equals(getCell(lieu,cpt,((action+1)*2)-1),"lieu")){
+                    personne.currentlieu=getCell(lieu,cpt,(action+1)*2);
+                } else if(equals(getCell(lieu,cpt,((action+1)*2)-1),"pnj")){
+                    loadPnj(getCell(lieu,cpt,(action+1)*2));
+                } else if(equals(getCell(lieu,cpt,((action+1)*2)-1),"monstre")){
+                    combat(getCell(lieu,cpt,(action+1)*2));
+                } else {
+                    println("erreur");
+                }
+                println("");
             }
         }
     }
@@ -134,6 +150,7 @@ class Main extends Program {
 //////////////////////////////////////////////////////////////////////////
 
     int saisie(int possibilite) {
+        print("<"+personne.nom+"> : ");
         String resultat;
         boolean trigger = true;
 
@@ -235,7 +252,6 @@ class Main extends Program {
                 }
             }
         }
-        deplacement(personne.currentlieu);
     }
 
 //////////////////////////////////////////////////////////////////////////
@@ -298,13 +314,14 @@ class Main extends Program {
     }
 
     void sauvegarder() {
-        String[][] save = {
-            { personne.nom },
-            { personne.pv + "", personne.pv_max + "" },
-            { personne.level + "" },
-            { personne.quete_cible, personne.quete_kill + "" }
+        String[][] save = new String[][]{
+            new String[]{ personne.nom,"" },
+            new String[]{ personne.pv + "", personne.pv_max + "" },
+            new String[]{ personne.level + "","" },
+            new String[]{ personne.quete_cible, personne.quete_kill + "" },
+            new String[]{ personne.currentlieu + "",""}
         };
-        saveCSV(save, "jeux/utilisateur/sauvegarde.csv");
+        saveCSV(save, "jeux/utilisateur/sauvegarde.csv",';');
     }
 //////////////////////////////////////////////////////////////////////////
 // quete
@@ -413,6 +430,7 @@ void ajouterobjet (String nom){
         int page=0;
         int nbPages = (length(attaquePossibles)+8-1)/8;
         while (true) {
+            boolean trigger = false;
             int debut = page * 8;
             int end = debut + 8;
             if (end > length(attaquePossibles)){
@@ -424,26 +442,32 @@ void ajouterobjet (String nom){
             if (nbPages!=1){
                 println("["+(end-debut)+"] Suivant");
                 println("["+(end-debut+1)+"] Annuler");
+                trigger = true;
             } else {
                 println("["+(end-debut)+"] Annuler");
             }
-            int reponse = saisie(end-debut+1);
+            int reponse;
+            if (trigger){
+                reponse = saisie(end-debut+1);
+            } else {
+                reponse = saisie(end-debut);
+            }
             if (nbPages!=1){
                 if (reponse==end-debut+1) {
                     return "annuler";
+                } else if (reponse==end-debut) {
+                    page++;
+                    if (page*8>=length(attaquePossibles)) {
+                        page = 0;
+                    }
                 }
             } else {
                 if (reponse==end-debut) {
                     return "annuler";
                 }
             }
-            if (reponse==end-debut) {
-                page++;
-                if (page*8>=length(attaquePossibles)) {
-                    page = 0;
-                }
-            }
             if (reponse>=0 && reponse<end-debut) {
+                println("7");
                 return attaquePossibles[debut + reponse];
             }
         }
@@ -481,6 +505,7 @@ void ajouterobjet (String nom){
         Monstre currentMonstre = newMonstre(monstre);
 
         while (true) {
+            boolean annuler = false;
             println(currentMonstre.nom + "      -      pv : "
                     + currentMonstre.pv + "/" + currentMonstre.pvmax);
 
@@ -492,49 +517,54 @@ void ajouterobjet (String nom){
 
             if (reponse == 0) {
                 String attaqueChoisie = attaque();
-                boolean question = question();
-                int degats = degats(attaqueChoisie);
-
-                if (!question) {
-                    println("Mince, vous vous êtes trompé et blessé par la même occasion en vous infligeant "
-                            + (int)(degats / 2) + " dégats...");
-                    personne.pv = personne.pv - ((int)(degats / 2));
+                if (equals(attaqueChoisie,"annuler")){
+                    annuler = true;
                 }
-                else {
-                    println("Bien joué, vous avez réussi à attaquer !\n");
-                    int random = (int)((random() * 100) + 1);
-
-                    if (random <= currentMonstre.esquive) {
-                        println("Cependant le(a) " + currentMonstre.nom + " a réussi à esquiver !\n");
+                if (!annuler){
+                    boolean question = question();
+                    int degats = degats(attaqueChoisie);
+                    if (!question) {
+                        println("Mince, vous vous êtes trompé et blessé par la même occasion en vous infligeant "
+                                + (int)(degats / 2) + " dégats...");
+                        personne.pv = personne.pv - ((int)(degats / 2));
                     }
                     else {
-                        println("Vous avez infligé " + degats + " dégats !\n");
-                        currentMonstre.pv = currentMonstre.pv - degats;
+                        println("Bien joué, vous avez réussi à attaquer !\n");
+                        int random = (int)((random() * 100) + 1);
+
+                        if (random <= currentMonstre.esquive) {
+                            println("Cependant le(a) " + currentMonstre.nom + " a réussi à esquiver !\n");
+                        }
+                        else {
+                            println("Vous avez infligé " + degats + " dégats !\n");
+                            currentMonstre.pv = currentMonstre.pv - degats;
+                        }
                     }
                 }
             }
             else {
                 utiliserObjet(personne,currentMonstre);
             }
-
-            if (currentMonstre.pv > 0) {
-                println("le " + currentMonstre.nom + " a utilisé "
-                        + currentMonstre.attaquenom + " et vous a infligé "
-                        + currentMonstre.attaquedegat + " dégats !\n");
-
-                personne.pv = personne.pv - currentMonstre.attaquedegat;
-            }
-            else {
-                println("Bravo vous vous en sortez sain et sauf\n");
-                afficherMisc("victoire");
-                verifiermonstretuer(currentMonstre.nom);
-                return true;
-            }
-
-            if (personne.pv <= 0) {
-                println("Vous avez succombé\n");
-                afficherMisc("mort_joueur");
-                return false;
+            if (!annuler){
+                if (currentMonstre.pv > 0) {
+                    println("le " + currentMonstre.nom + " a utilisé "
+                            + currentMonstre.attaquenom + " et vous a infligé "
+                            + currentMonstre.attaquedegat + " dégats !\n");
+    
+                    personne.pv = personne.pv - currentMonstre.attaquedegat;
+                }
+                else {
+                    println("Bravo vous vous en sortez sain et sauf\n");
+                    afficherMisc("victoire");
+                    verifiermonstretuer(currentMonstre.nom);
+                    return true;
+                }
+    
+                if (personne.pv <= 0) {
+                    println("Vous avez succombé\n");
+                    afficherMisc("mort_joueur");
+                    return false;
+                }
             }
         }
     }
