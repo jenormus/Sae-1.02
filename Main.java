@@ -48,7 +48,7 @@ class Main extends Program {
     }
 
     String loadDialoguePNJ(String pnj, boolean quete) {
-        CSVFile current = loadCSV("jeux/option pnj/dialogue.csv", ';');
+        CSVFile current = loadCSV("jeux/entité/option pnj/dialogue.csv", ';');
         int ligne = 0;
 
         while (!equals(getCell(current, ligne, 0), pnj)) {
@@ -172,28 +172,25 @@ class Main extends Program {
     void loadPnj(String pnj) {
         afficherSpritePNJ(pnj);
 
-        CSVFile current = loadCSV("jeux/entité/option pnj/quete.csv", ';');
+        CSVFile current = loadCSV("jeux/entité/option pnj/quete.csv",';');
         int ligne = 0;
         String rep = "";
         boolean encours = true;
 
-        while (getCell(current, ligne, 0) != pnj) {
+        while (!(equals(getCell(current, ligne, 0),pnj))) {
             ligne++;
         }
 
         int colonne = 4;
 
         while (encours) {
-            if (stringToInt(getCell(current, ligne, colonne))==personne.level) {
-                ligne++;
-            }
-            else if (stringToInt(getCell(current, ligne, colonne))==personne.level
-                     && ligne == rowCount(current)) {
+            if (ligne == (rowCount(current)-1)) {
 
                 loadDialoguePNJ(pnj, false);
                 encours = false;
-            }
-            else if(equals(getCell(current, ligne, 5),"false")){
+            } else if (!(stringToInt(getCell(current, ligne, colonne))==personne.level)) {
+                ligne++;
+            } else if(equals(getCell(current, ligne, 5),"false")){
                 loadDialoguePNJ(pnj, true);
                 loadquete();
                 println(getCell(current, ligne, 1));
@@ -201,10 +198,10 @@ class Main extends Program {
                 encours = false;
             } else if(equals(getCell(current, ligne, 5),"true")){
                 if(verifierquete()){
-                    println("merci d'avoir accompli la mission vous trouverai une nouvelle mission chez"+getCell(current, ligne, 6));
+                    println("merci d'avoir accompli la mission vous trouverez une nouvelle mission chez"+getCell(current, ligne, 6));
                     encours = false;
                 } else{
-                    println("Petit/Petite chenapan retourne travaillé");
+                    println("Petit/Petite chenapan retourne travailler");
                     encours = false;
                 }
             }
