@@ -362,6 +362,74 @@ void ajouterobjet (String nom){
 // COMBAT
 //////////////////////////////////////////////////////////////////////////
 
+    String demanderAttaque(String[] attaquePossibles){
+        int page=0;
+        int nbPages = (length(attaquePossibles)+8-1)/8;
+        while (true) {
+            int debut = page * 8;
+            int end = debut + 8;
+            if (end > length(attaquePossibles)){
+                end = length(attaquePossibles);
+            }
+            for (int i=debut;i<end;i++) {
+                println("["+(i-debut)+"] " + attaquePossibles[i]);
+            }
+            if (nbPages!=1){
+                println("["+(end-debut)+"] Suivant");
+                println("["+(end-debut+1)+"] Annuler");
+            } else {
+                println("["+(end-debut)+"] Annuler");
+            }
+            int reponse = saisie(end-debut+1);
+            if (nbPages!=1){
+                if (reponse==end-debut+1) {
+                    return "annuler";
+                }
+            } else {
+                if (reponse==end-debut) {
+                    return "annuler";
+                }
+            }
+            if (reponse==end-debut) {
+                page++;
+                if (page*8>=length(attaquePossibles)) {
+                    page = 0;
+                }
+            }
+            if (reponse>=0 && reponse<end-debut) {
+                return attaquePossibles[debut + reponse];
+            }
+        }
+    }
+
+//fonction à appeller facilement pour lancer l'action de l'attaque
+
+    String attaque(){
+        CSVFile current = loadCSV("jeux/systeme de magie/possibilite attaque.csv",';');
+        String[] attaquePossibles = new String[rowCount(current)];
+        int cpt=0;
+        while (cpt<length(attaquePossibles) && stringToInt(getCell(current,cpt,2))<=personne.level){
+            cpt++;
+        }
+        String[] attaquePossiblesClean = new String[cpt];
+        for (int i=0;i<cpt;i++){
+            attaquePossiblesClean[i]=getCell(current,i,0);
+        }
+        String choixAttaque = demanderAttaque(attaquePossiblesClean);
+        return choixAttaque; 
+    }
+
+    int degats(String attaque){
+        CSVFile current = loadCSV("jeux/systeme de magie/possibilite attaque.csv",';');
+        int cpt = -1;
+        int resultat;
+        do{
+            cpt++;
+            resultat=stringToInt(getCell(current,cpt,1));
+        }while(!equals(attaque,getCell(current,cpt,0)));
+        return resultat;
+    }
+
     boolean combat(String monstre) {
         Monstre currentMonstre = newMonstre(monstre);
 
