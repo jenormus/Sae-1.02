@@ -1,8 +1,8 @@
 Guilde de Magie;lieu;La route;lieu;Hall;lieu;La cour arrière
 Hall;lieu;Guilde de Magie;lieu;La reception;lieu;Les escaliers;lieu;La salle de conférence;lieu;La salle de repos;pnj;merlin
 La reception;lieu;Hall
-Les escaliers;lieu;Hall;lieu;Le labot;lieu;Le bureau du chef
-Le labot;lieu;Les escaliers
+Les escaliers;lieu;Hall;lieu;Le labo;lieu;Le bureau du chef
+Le labo;lieu;Les escaliers
 Le bureau du chef;lieu;Les escaliers;pnj;directeur
 La salle de conférence;lieu;Hall
 La salle de repos;lieu;Hall
