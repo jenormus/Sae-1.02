@@ -1,203 +1,193 @@
-CRÉDITS
- CRÉATION DU MONDE
+════════════════════════════════════════════════════════════
+                        CRÉDITS
+════════════════════════════════════════════════════════════
 
-Concepteur de l’univers
-Chekalil Youssef
- 
-Bocquet Eliott
 
-Architecte des royaumes imaginaires
-Chekalil Youssef
- 
-Bocquet Eliott
+═══════════════════════ CRÉATION DU MONDE ═══════════════════════
 
-Gardien de la cohérence spatiale et temporelle
-Chekalil Youssef
- 
-Bocquet Eliott
+Conception de l’univers et des fondations du monde
+    Chekalil Youssef
+    Bocquet Eliott
 
- CONCEPTION DU GAMEPLAY
+Architectes des royaumes imaginaires
+    Chekalil Youssef
+    Bocquet Eliott
 
-Game Designer principal
-Chekalil Youssef
- 
-Bocquet Eliott
+Gardiens de la cohérence spatiale et temporelle
+    Chekalil Youssef
+    Bocquet Eliott
 
-Responsable de l’équilibrage des mécaniques
-Chekalil Youssef
- 
-Bocquet Eliott
 
-Maître des systèmes de combat et de progression
-Chekalil Youssef
- 
-Bocquet Eliott
+═══════════════════════ CONCEPTION DU GAMEPLAY ═══════════════════════
 
- PROGRAMMATION
+Game Designers principaux
+    Chekalil Youssef
+    Bocquet Eliott
 
-Programmeur principal
-Chekalil Youssef
- 
-Bocquet Eliott
+Responsables de l’équilibrage des mécaniques de jeu
+    Chekalil Youssef
+    Bocquet Eliott
 
-Ingénieur systèmes et logique interne
-Chekalil Youssef
- 
-Bocquet Eliott
+Maîtres des systèmes de combat, de progression et de choix
+    Chekalil Youssef
+    Bocquet Eliott
 
-Développeur des algorithmes obscurs et mystérieux
-Chekalil Youssef
- 
-Bocquet Eliott
+
+══════════════════════════ PROGRAMMATION ══════════════════════════
+
+Programmeurs principaux
+    Chekalil Youssef
+    Bocquet Eliott
+
+Ingénieurs des systèmes et de la logique interne
+    Chekalil Youssef
+    Bocquet Eliott
+
+Développeurs des algorithmes obscurs et mystérieux
+    Chekalil Youssef
+    Bocquet Eliott
 
 Optimisation, débogage et corrections impossibles
-Chekalil Youssef
- 
-Bocquet Eliott
+    Chekalil Youssef
+    Bocquet Eliott
 
- SYSTÈME DES ZONES & EXPLORATION
 
-Concepteur des lieux, passages secrets et chemins oubliés
-Chekalil Youssef
- 
-Bocquet Eliott
+════════════════════ SYSTÈME DES ZONES & EXPLORATION ════════════════════
 
-Responsable des hidden boss et zones interdites
-Chekalil Youssef
- 
-Bocquet Eliott
+Concepteurs des lieux, passages secrets et chemins oubliés
+    Chekalil Youssef
+    Bocquet Eliott
 
- PERSONNAGES & PNJ
+Responsables des zones interdites et des Hidden Boss
+    Chekalil Youssef
+    Bocquet Eliott
+
+
+════════════════════════ PERSONNAGES & PNJ ════════════════════════
 
 Création des personnages non-joueurs
-Chekalil Youssef
- 
-Bocquet Eliott
+    Chekalil Youssef
+    Bocquet Eliott
 
-Écriture des dialogues et des quêtes
-Chekalil Youssef
- 
-Bocquet Eliott
+Écriture des dialogues et des quêtes narratives
+    Chekalil Youssef
+    Bocquet Eliott
 
-Gestionnaire des humeurs, quêtes et états émotionnels des PNJ
-Chekalil Youssef
- 
-Bocquet Eliott
+Gestion des humeurs, états émotionnels et réactions des PNJ
+    Chekalil Youssef
+    Bocquet Eliott
 
- SYSTÈME DE COMBAT
 
-Concepteur du système de combat
-Chekalil Youssef
- 
-Bocquet Eliott
+══════════════════════════ SYSTÈME DE COMBAT ══════════════════════════
+
+Concepteurs du système de combat
+    Chekalil Youssef
+    Bocquet Eliott
 
 Équilibrage des attaques, esquives et dégâts
-Chekalil Youssef
- 
-Bocquet Eliott
+    Chekalil Youssef
+    Bocquet Eliott
 
-Responsable des conséquences en cas d’erreur fatale
-Chekalil Youssef
- 
-Bocquet Eliott
+Responsables des conséquences en cas d’erreur fatale
+    Chekalil Youssef
+    Bocquet Eliott
 
- INVENTAIRE & OBJETS
 
-Concepteur du système d’inventaire
-Chekalil Youssef
- 
-Bocquet Eliott
+════════════════════════ INVENTAIRE & OBJETS ════════════════════════
+
+Concepteurs du système d’inventaire
+    Chekalil Youssef
+    Bocquet Eliott
 
 Gestion des objets, soins et artefacts légendaires
-Chekalil Youssef
- 
-Bocquet Eliott
+    Chekalil Youssef
+    Bocquet Eliott
 
- SYSTÈME DE QUÊTES
 
-Créateur des quêtes principales
-Chekalil Youssef
- 
-Bocquet Eliott
+══════════════════════════ SYSTÈME DE QUÊTES ══════════════════════════
 
-Créateur des quêtes secondaires
-Chekalil Youssef
- 
-Bocquet Eliott
+Créateurs des quêtes principales
+    Chekalil Youssef
+    Bocquet Eliott
 
-Superviseur des quêtes cachées et objectifs secrets
-Chekalil Youssef
- 
-Bocquet Eliott
+Créateurs des quêtes secondaires
+    Chekalil Youssef
+    Bocquet Eliott
 
- DIRECTION ARTISTIQUE
+Superviseurs des quêtes cachées et objectifs secrets
+    Chekalil Youssef
+    Bocquet Eliott
+
+
+══════════════════════════ DIRECTION ARTISTIQUE ══════════════════════════
 
 Direction artistique générale
-Chekalil Youssef
- 
-Bocquet Eliott
+    Chekalil Youssef
+    Bocquet Eliott
 
-Responsable du style ASCII et des visuels textuels
-Chekalil Youssef
- 
-Bocquet Eliott
+Responsables du style ASCII et des visuels textuels
+    Chekalil Youssef
+    Bocquet Eliott
 
- AMBIANCE & IMMERSION
 
-Concepteur de l’ambiance narrative
-Chekalil Youssef
- 
-Bocquet Eliott
+══════════════════════════ AMBIANCE & IMMERSION ══════════════════════════
 
-Responsable de l’immersion et du rythme du jeu
-Chekalil Youssef
- 
-Bocquet Eliott
+Concepteurs de l’ambiance narrative
+    Chekalil Youssef
+    Bocquet Eliott
 
- TESTS & QUALITÉ
+Responsables de l’immersion et du rythme du jeu
+    Chekalil Youssef
+    Bocquet Eliott
 
-Testeur principal
-Chekalil Youssef
- 
-Bocquet Eliott
 
-Testeur secondaire
-Chekalil Youssef
- 
-Bocquet Eliott
+══════════════════════════ TESTS & QUALITÉ ══════════════════════════
 
-Chasseur de bugs officiels et non-officiels
-Chekalil Youssef
- 
-Bocquet Eliott
+Testeurs principaux
+    Chekalil Youssef
+    Bocquet Eliott
 
- IDÉES & CONCEPTS
+Chasseurs de bugs officiels et non-officiels
+    Chekalil Youssef
+    Bocquet Eliott
+
+
+══════════════════════════ IDÉES & CONCEPTS ══════════════════════════
 
 Idée originale
-Chekalil Youssef
- 
-Bocquet Eliott
+    Chekalil Youssef
+    Bocquet Eliott
 
 Co-création du concept global
-Chekalil Youssef &  
-Bocquet Eliott & Youssef Chekalil
+    Chekalil Youssef
+    Bocquet Eliott
+    Bocquet Eliott & Chekalil Youssef
 
- DÉVELOPPEMENT
+
+══════════════════════════ DÉVELOPPEMENT ══════════════════════════
 
 Développement continu, nuits blanches et cafés
-Chekalil Youssef
- 
-Bocquet Eliott
+    Chekalil Youssef
+    Bocquet Eliott
 
 Support moral, motivation et persévérance
-Chekalil Youssef
- 
-Bocquet Eliott
+    Chekalil Youssef
+    Bocquet Eliott
 
- REMERCIEMENTS SPÉCIAUX
+
+══════════════════════════ REMERCIEMENTS SPÉCIAUX ══════════════════════════
 
 Un immense merci à :
-Chekalil Youssef
-Bocquet Eliott
 
-Pour leur patience, leur créativité et leur détermination sans limite.
+    Chekalil Youssef
+    Bocquet Eliott
+
+Pour leur patience,
+leur créativité,
+leur détermination sans limite
+et leur passion pour ce projet.
+
+
+════════════════════════════════════════════════════════════
+        Merci d’avoir joué à notre jeu
+════════════════════════════════════════════════════════════
