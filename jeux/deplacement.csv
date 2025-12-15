@@ -1,3 +1,32 @@
-Hall;lieu;Cafet;pnj;merlin;monstre;wolf;monstre;dragon;monstre;fantome
-Cafet;lieu;Hall;lieu;Foret
-Foret;lieu;Cafet
+Guilde de Magie;lieu;La route;lieu;Hall;lieu;La cour arrière
+Hall;lieu;Guilde de Magie;lieu;La reception;lieu;Les escaliers;lieu;La salle de conférence;lieu;La salle de repos;pnj;merlin
+La reception;lieu;Hall
+Les escaliers;lieu;Hall;lieu;Le labot;lieu;Le bureau du chef
+Le labot;lieu;Les escaliers
+Le bureau du chef;lieu;Les escaliers;pnj;directeur
+La salle de conférence;lieu;Hall
+La salle de repos;lieu;Hall
+La cour arrière;lieu;Guilde de Magie;lieu;Le camps d'entrainement;lieu;L'espace repos;lieu;Les toilettes
+Le camps d'entrainement;lieu;La cour arrière
+L'espace repos;lieu;La cour arrière
+Les toilettes;lieu;La cour arrière;monstre;ogre
+La route;lieu;Guilde de Magie;lieu;Le Donjon;lieu;La Forêt
+Le Donjon;lieu;La route;lieu;Embouchure ouest;lieu;Embouchure nord;lieu;Embouchure est;pnj;gardien
+Embouchure ouest;lieu;Le Donjon;lieu;Crevasse;lieu;Tunnel lumineux;monstre;fantome
+Crevasse;lieu;Embouchure ouest;lieu;Boss room;monstre;bebe_dragon
+Boss room;lieu;Crevasse;monstre;dragon
+Tunnel lumineux;lieu;Embouchure ouest;monstre;fantome
+Embouchure nord;lieu;Le Donjon;lieu;Cul de sac ?;monstre;fantome
+Cul de sac ?;lieu;Embouchure nord
+Embouchure est;lieu;Le Donjon;lieu;Le puit
+Le puit;lieu;Embouchure est
+La Forêt;lieu;La route;lieu;Chemin de terre;lieu;La maison;lieu;Chemin de boue;pnj;elf
+Chemin de terre;lieu;La Forêt;monstre;sorciere
+Chemin de boue;lieu;La Forêt;monstre;loup
+La maison;lieu;La Forêt;lieu;L'escalier;lieu;La salle à manger;lieu;La cuisine;lieu;La forge
+L'escalier;lieu;La maison;lieu;La chambre;lieu;Le bureau
+La chambre;lieu;L'escalier
+Le bureau;lieu;L'escalier
+La salle à manger;lieu;La maison;pnj;gnome
+La cuisine;lieu;La maison
+La forge;lieu;La maison

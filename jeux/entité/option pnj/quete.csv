@@ -1,5 +1,5 @@
-merlin;Tuer;wolf;10;1;false;gardien
- ;Tuer;wolf;20;5;false;gardien
+merlin;Tuer;loup;10;1;false;gardien
+ ;Tuer;loup;20;5;false;gardien
  ;Tuer;ogre;10;3;false;gnome
 gardien;Tuer;ogre;20;9;false;directeur
  ;Tuer;ogre;30;2;false;merlin
