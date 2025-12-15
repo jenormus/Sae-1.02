@@ -121,13 +121,16 @@ class Main extends Program {
                 for (int i=0;i<nbelements;i++){
                     println("["+i+"] "+getCell(lieu,cpt,((i+1)*2)-1)+" - "+getCell(lieu,cpt,((i+1)*2)));
                 }
-                println("\n["+nbelements+"] Sauvegarder et Quitter");
+                println("\n["+nbelements+"] inventaire");
+                println("\n["+nbelements+1+"] Sauvegarder et Quitter");
 
                 //emplacement pour inventaire ici
                 
                 println("");
-                int action = saisie(nbelements);
-                if(action == nbelements){
+                int action = saisie(nbelements+1);
+                if (action == nbelements){
+                    afficherinventaire();
+                }else if(action == nbelements+1){
                     sauvegarder();
                     ingame = false;
                 //"else if" pour l'inventaire a ajouter 
@@ -245,6 +248,7 @@ class Main extends Program {
             } else if(equals(getCell(current, ligne, 5),"true")){
                 if(verifierquete()){
                     println("merci d'avoir accompli la mission vous trouverez une nouvelle mission chez"+getCell(current, ligne, 6));
+                    ajouterobjet("potion de soins");
                     encours = false;
                 } else{
                     println("Petit/Petite chenapan retourne travailler");
@@ -383,7 +387,7 @@ void verifiermonstretuer(String nom){
 // inventaire
 //////////////////////////////////////////////////////////////////////////
 void afficherinventaire(){
-    CSVFile current = loadCSV("jeux/utilisateur/ineventaire.csv", ';');
+    CSVFile current = loadCSV("jeux/utilisateur/inventaire.csv", ';');
     int ligne =0;
     while(ligne<rowCount(current)){
         println("["+ligne+"] "+getCell(current, ligne, 0));
@@ -394,12 +398,14 @@ void afficherinventaire(){
 void utiliserObjet(User nom,Monstre monstre){
     CSVFile current = loadCSV("jeux/utilisateur/inventaire.csv", ';');
     afficherinventaire();
-    int ligne=readInt();
+    print("<objet>");
+    int ligne=saisie(rowCount(current));
     if(equals(getCell(current,ligne,1),"soins")){
         nom.pv=nom.pv+stringToInt(getCell(current,ligne,2));
     } else{
         monstre.pv=monstre.pv-stringToInt(getCell(current,ligne,2));
     }
+    
     
 }
 
