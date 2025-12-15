@@ -470,12 +470,20 @@ void loadquete() {
 //////////////////////////////////////////////////////////////////////////
 void afficherinventaire(){
     CSVFile current = loadCSV("jeux/utilisateur/inventaire.csv", ';');
-    int ligne =0;
-    while(ligne<rowCount(current)){
-        println("["+ligne+"] "+getCell(current, ligne, 0));
-        ligne++;
+
+    println("\n════════════ INVENTAIRE ════════════");
+
+    if (rowCount(current) == 0){
+        println("  (Inventaire vide)");
+    } else {
+        for (int ligne = 0; ligne < rowCount(current); ligne++){
+            println("  [" + ligne + "] " + getCell(current, ligne, 0));
+        }
     }
+
+    println("════════════════════════════════════\n");
 }
+
 
     void utiliserObjet(User nom, Monstre monstre) {
         CSVFile current = loadCSV("jeux/utilisateur/inventaire.csv", ';');
