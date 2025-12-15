@@ -9,12 +9,14 @@ class Main extends Program {
 //////////////////////////////////////////////////////////////////////////
 
     User personne = newUser();
+    final String RESET = "\033c\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 
     void algorithm() {
         jeux();
     }
 
     void jeux() {
+        print(RESET);
         afficherMisc("title");
 
         println("════════════════════════════════════");
@@ -66,14 +68,19 @@ class Main extends Program {
 
     void NouvellePartie() {
         String[][] save = new String[][]{
-            new String[]{ " ", " " },
-            new String[]{ " ", " " },
-            new String[]{ " ", " " },
-            new String[]{ " ", " " },
-            new String[]{ " ", " " }
-};
+            new String[]{ "Admin", "" },
+            new String[]{ "100", "100" },
+            new String[]{ "1", "" },
+            new String[]{ "default", "0" },
+            new String[]{ "La route", "" }};
+        String[][] save2 = new String[][]{
+            new String[]{" "," "},
+            new String[]{" "," "},
+            new String[]{" "," "},
+            new String[]{" "," "},
+            new String[]{" "," "}};
         saveCSV(save, "jeux/utilisateur/sauvegarde.csv", ';');
-        saveCSV(save, "jeux/utilisateur/user.csv", ';');
+        saveCSV(save2, "jeux/utilisateur/user.csv", ';');
         CSVFile quete = loadCSV("jeux/entité/option pnj/quete.csv", ';');
         String[][] rep = new String[rowCount(quete)][columnCount(quete)];
         int ligne = 0;
@@ -87,6 +94,7 @@ class Main extends Program {
             }
         }
         saveCSV(rep, "jeux/entité/option pnj/quete.csv", ';');
+        personne = newUser();
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -152,6 +160,7 @@ class Main extends Program {
     void menu() {
         boolean ingame = true;
         while (ingame) {
+            print(RESET);
             if (personne.level >= 10) {
                 ingame = false;
                 println("Merci d'avoir jouer a notre magnifique jeux qui vaut surement un 20/20");
@@ -165,7 +174,11 @@ class Main extends Program {
                 int nbelements = (columnCount(lieu, cpt) / 2);
                 println("Action(s) :\n");
                 for (int i = 0; i < nbelements; i++) {
-                    println("[" + i + "] " + getCell(lieu, cpt, ((i + 1) * 2) - 1) + " - " + getCell(lieu, cpt, ((i + 1) * 2)));
+                    print("[" + i + "] | " + getCell(lieu, cpt, ((i + 1) * 2) - 1) + " - " + getCell(lieu, cpt, ((i + 1) * 2)));
+                    if(i==0 && !equals(personne.currentlieu,"La route")){
+                        print(" (zone précédente)\n");
+                    }
+                    println("");
                 }
                 println("\n[" + nbelements + "] inventaire");
                 println("\n[" + (nbelements + 1) + "] Sauvegarder et Quitter");
@@ -205,6 +218,7 @@ class Main extends Program {
         boolean trigger = true;
 
         do {
+            print("<"+personne.nom+"> : ");
             resultat = readString();
 
             if ((length(resultat) != 1)
@@ -329,7 +343,7 @@ class Main extends Program {
         println(question[0] + "\n");
 
         for (int i = 0; i < 4; i++) {
-            println(" [" + i + "] " + question[i + 1]);
+            println(" [" + i + "]  | " + question[i + 1]);
         }
 
         println("════════════════════════════════════\n");
@@ -454,21 +468,14 @@ void loadquete() {
     //////////////////////////////////////////////////////////////////////////
 // inventaire
 //////////////////////////////////////////////////////////////////////////
-void afficherinventaire() {
-        CSVFile current = loadCSV("jeux/utilisateur/inventaire.csv", ';');
-
-        println("════════════ INVENTAIRE ════════════");
-
-        if (rowCount(current) == 0) {
-            println(" (Inventaire vide)");
-        } else {
-            for (int ligne = 0; ligne < rowCount(current); ligne++) {
-                println(" [" + ligne + "] " + getCell(current, ligne, 0));
-            }
-        }
-
-        println("════════════════════════════════════");
+void afficherinventaire(){
+    CSVFile current = loadCSV("jeux/utilisateur/inventaire.csv", ';');
+    int ligne =0;
+    while(ligne<rowCount(current)){
+        println("["+ligne+"] "+getCell(current, ligne, 0));
+        ligne++;
     }
+}
 
     void utiliserObjet(User nom, Monstre monstre) {
         CSVFile current = loadCSV("jeux/utilisateur/inventaire.csv", ';');
@@ -550,15 +557,15 @@ void afficherinventaire() {
             if (end > length(attaquePossibles)) {
                 end = length(attaquePossibles);
             }
-            for (int i = debut; i < end; i++) {
-                println("[" + (i - debut) + "] " + attaquePossibles[i]);
+            for (int i=debut;i<end;i++) {
+                println("["+(i-debut)+"] | " + attaquePossibles[i]);
             }
-            if (nbPages != 1) {
-                println("[" + (end - debut) + "] Suivant");
-                println("[" + (end - debut + 1) + "] Annuler");
+            if (nbPages!=1){
+                println("["+(end-debut)+"] | Suivant");
+                println("["+(end-debut+1)+"] | Annuler\n");
                 trigger = true;
             } else {
-                println("[" + (end - debut) + "] Annuler");
+                println("["+(end-debut)+"] Annuler");
             }
             int reponse;
             if (trigger) {
@@ -614,10 +621,18 @@ void afficherinventaire() {
         return resultat;
     }
 
-    boolean combat(String monstre) {
-        Monstre currentMonstre = newMonstre(monstre);
+    void afficherCurrentMonstre(Monstre currentMonstre){
+        print(RESET);
+        println(currentMonstre.nom + "      -      pv : "
+                + currentMonstre.pv + "/" + currentMonstre.pvmax+"\n");
+        afficherSpriteMonstre(currentMonstre.nom);
+        println("Vos pv : " + personne.pv + "/" + personne.pv_max + "\n");
+    }
 
-        while (true) {
+    void combat(String monstre) {
+        Monstre currentMonstre = newMonstre(monstre);
+        boolean infight = true;
+        while (infight) {
             boolean annuler = false;
             println("═══════════════ COMBAT ═══════════════");
             println(" Ennemi : " + currentMonstre.nom);
@@ -631,13 +646,14 @@ void afficherinventaire() {
             println("[0] Attaquer");
             println("[1] Utiliser un objet\n");
             int reponse = saisie(1);
-
             if (reponse == 0) {
+                afficherCurrentMonstre(currentMonstre);
                 String attaqueChoisie = attaque();
                 if (equals(attaqueChoisie, "annuler")) {
                     annuler = true;
                 }
-                if (!annuler) {
+                if (!annuler){
+                    afficherCurrentMonstre(currentMonstre);
                     boolean question = question();
                     int degats = degats(attaqueChoisie);
                     if (!question) {
@@ -666,19 +682,24 @@ void afficherinventaire() {
                             + currentMonstre.attaquedegat + " dégats !\n");
 
                     personne.pv = personne.pv - currentMonstre.attaquedegat;
+                    sleep(5000);
                 } else {
+                    print(RESET);
                     println("Bravo vous vous en sortez sain et sauf\n");
                     afficherMisc("victoire");
                     verifiermonstretuer(currentMonstre.nom);
                     println("Une lumiére magique descend et vous soigne de toute vos blessure");
                     personne.pv = personne.pv_max;
-                    return true;
+                    infight=false;
+                    sleep(5000);
                 }
 
                 if (personne.pv <= 0) {
+                    print(RESET);
                     println("Vous avez succombé\n");
                     afficherMisc("mort_joueur");
-                    return false;
+                    infight=false;
+                    sleep(5000);
                 }
             }
         }

@@ -1,4 +1,4 @@
-liste des monstre apaaissable;Guilde de Magie;Le Hall;La reception;;;
+liste des monstre apaaissable;Guilde de Magie;Hall;La reception;;;
 ;;;Les escaliers;Le labot;;
 ;;;;Le bureau du chef;;
 ;;;La salle de conference;;;
@@ -6,10 +6,10 @@ liste des monstre apaaissable;Guilde de Magie;Le Hall;La reception;;;
 ;;La cour arrière;Le camp d'entrainement;;;
 ;;;L'espace repos;;;
 ;;;Les toilettes;;;
-;Dungeon;L'entrée;passage 1;passage1,1;boss room;
-;;;;passage1,2;trap;
-;;;passage2;impasse;hidden boss;tresor
-;;;passage3;puit;;
+;Dungeon;L'entrée;Embouchure ouest;Crevasse;boss room;
+;;;;Tunnel lumineux;trap;
+;;;Embouchure nord;impasse;hidden boss;tresor
+;;;Embouchure est;puit;;
 ;Foret;L'entrée;chemin1;;;
 ;;;chemin2;;;
 ;;La maison;l'entrée;;;
