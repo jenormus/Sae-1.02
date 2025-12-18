@@ -158,10 +158,11 @@ class Main extends Program {
 //////////////////////////////////////////////////////////////////////////
     
     void menu() {
+        CSVFile current = loadCSV("jeux/entité/option pnj/quete.csv", ';');
         boolean ingame = true;
         while (ingame) {
             print(RESET);
-            if (personne.level >= 10) {
+            if (personne.level >= rowCount(current)) {
                 ingame = false;
                 println("Merci d'avoir jouer a notre magnifique jeux qui vaut surement un 20/20");
                 Credit();
