@@ -21,11 +21,10 @@ class Main extends Program {
 
         println("════════════════════════════════════");
         println("          MENU PRINCIPAL            ");
-        println("════════════════════════════════════");
+        println("════════════════════════════════════\n");
         println("[0] Nouvelle Partie");
         println("[1] Continuer");
-        println("[2] Crédits");
-        println("");
+        println("[2] Crédits\n");
 
         int rep = saisie(2);
 
@@ -68,7 +67,7 @@ class Main extends Program {
 
     void NouvellePartie() {
         String[][] save = new String[][]{
-            new String[]{ "Admin", "" },
+            new String[]{ "Joueur", "" },
             new String[]{ "100", "100" },
             new String[]{ "1", "" },
             new String[]{ "default", "0" },
@@ -79,8 +78,11 @@ class Main extends Program {
             new String[]{" "," "},
             new String[]{" "," "},
             new String[]{" "," "}};
+        String[][] save3 = new String[][]{
+            new String[]{" "}};
         saveCSV(save, "jeux/utilisateur/sauvegarde.csv", ';');
         saveCSV(save2, "jeux/utilisateur/user.csv", ';');
+        saveCSV(save3, "jeux/utilisateur/inventaire.csv", ';');
         CSVFile quete = loadCSV("jeux/entité/option pnj/quete.csv", ';');
         String[][] rep = new String[rowCount(quete)][columnCount(quete)];
         int ligne = 0;
@@ -175,32 +177,44 @@ class Main extends Program {
                 int nbelements = (columnCount(lieu, cpt) / 2);
                 println("Action(s) :\n");
                 for (int i = 0; i < nbelements; i++) {
-                    print("[" + i + "] | " + getCell(lieu, cpt, ((i + 1) * 2) - 1) + " - " + getCell(lieu, cpt, ((i + 1) * 2)));
+                    print("[" + i + "] | ");
+                    if (equals(getCell(lieu, cpt, ((i + 1) * 2) - 1),"trap")){
+                        print("lieu");
+                    }else{ 
+                        print(getCell(lieu, cpt, ((i + 1) * 2) - 1));
+                    }
+                    print(" - " + getCell(lieu, cpt, ((i + 1) * 2)));
                     if(i==0 && !equals(personne.currentlieu,"La route")){
                         print(" (zone précédente)\n");
                     }
                     println("");
                 }
-                println("\n[" + nbelements + "] inventaire");
-                println("\n[" + (nbelements + 1) + "] Sauvegarder et Quitter");
+                println("\n[" + nbelements + "] | inventaire");
+                println("\n[" + (nbelements + 1) + "] | Sauvegarder et Quitter");
 
-                //emplacement pour inventaire ici
                 println("");
                 int action = saisie(nbelements + 1);
                 if (action == nbelements) {
                     afficherinventaire();
-                    println("\nAppuyez sur Entrée pour revenir au menu");
-                    readString();
+                    waitingForPlayerActivity();
                 } else if (action == nbelements + 1) {
                     sauvegarder();
                     ingame = false;
-                    //"else if" pour l'inventaire a ajouter 
+                    //"else if" pour l'inventaire a ajouter
+                } else if (equals(getCell(lieu, cpt, ((action + 1) * 2) - 1),"trap")) {
+                    print(RESET);
+                    println("Mince, il semble que vous ayez marché sur un piège en entrant, je n'essayerais de revenir ici si j'étais vous !");
+                    waitingForPlayerActivity();
+                    personne.currentlieu = getCell(lieu, cpt, (action + 1) * 2);
                 } else if (equals(getCell(lieu, cpt, ((action + 1) * 2) - 1), "lieu")) {
                     personne.currentlieu = getCell(lieu, cpt, (action + 1) * 2);
                 } else if (equals(getCell(lieu, cpt, ((action + 1) * 2) - 1), "pnj")) {
                     loadPnj(getCell(lieu, cpt, (action + 1) * 2));
                 } else if (equals(getCell(lieu, cpt, ((action + 1) * 2) - 1), "monstre")) {
-                    combat(getCell(lieu, cpt, (action + 1) * 2));
+                    if (combat(getCell(lieu, cpt, (action + 1) * 2))){
+                        ingame = false;
+                    }
+                    waitingForPlayerActivity();
                 } else {
                     println("erreur");
                 }
@@ -214,12 +228,13 @@ class Main extends Program {
 //////////////////////////////////////////////////////////////////////////
 
     int saisie(int possibilite) {
-        print("<" + personne.nom + "> : ");
         String resultat;
         boolean trigger = true;
 
         do {
-            print("<"+personne.nom+"> : ");
+            if(equals(personne.nom,"Joueur")){
+                print("<"+personne.nom+"> : ");
+            }
             resultat = readString();
 
             if ((length(resultat) != 1)
@@ -252,6 +267,11 @@ class Main extends Program {
         return resultat;
     }
 
+    void waitingForPlayerActivity(){ 
+       println("\nAppuyez sur la touche Entrée pour continuer");
+       readString();
+    }
+
     //////////////////////////////////////////////////////////////////////////
 // SYSTEME DE QUESTIONS
 //////////////////////////////////////////////////////////////////////////
@@ -261,7 +281,7 @@ class Main extends Program {
         CSVFile current = loadCSV("jeux/systeme de magie/question.csv", ';');
 
         int nbligne = rowCount(current);
-        int ligne = (int) random(0, nbligne);
+        int ligne = (int) random(0, nbligne-1);
 
         resultat[0] = getCell(current, ligne, 0);
         resultat[5] = getCell(current, ligne, 1);
@@ -311,7 +331,7 @@ class Main extends Program {
                 println("════════════════════════════════════\n");
                 encours = false;
             } else if (equals(getCell(current, ligne, 5), "true")) {
-                if (verifierquete()) {
+                if (verifierquete(ligne)) {
                     println("\n════════════════════════════════════");
                     println(" " + pnj + " vous parle ");
                     println("════════════════════════════════════");
@@ -327,10 +347,12 @@ class Main extends Program {
                     println("════════════════════════════════════");
                     println("Petit/Petite chenapan retourne travailler");
                     println("════════════════════════════════════\n");
+                    println(personne.quete_kill);
                     encours = false;
                 }
             }
         }
+        waitingForPlayerActivity();
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -338,16 +360,16 @@ class Main extends Program {
 //////////////////////////////////////////////////////////////////////////
 
     void afficherQuestion(String[] question) {
-        println("════════════════════════════════════");
+        println("══════════════════════════════════════");
         println(" QUESTION ");
-        println("════════════════════════════════════");
+        println("══════════════════════════════════════");
         println(question[0] + "\n");
 
         for (int i = 0; i < 4; i++) {
             println(" [" + i + "]  | " + question[i + 1]);
         }
 
-        println("════════════════════════════════════\n");
+        println("══════════════════════════════════════\n");
     }
 
     boolean question() {
@@ -412,6 +434,7 @@ class Main extends Program {
 //////////////////////////////////////////////////////////////////////////
 void loadquete() {
         CSVFile quete = loadCSV("jeux/entité/option pnj/quete.csv", ';');
+        personne.quete_kill = 0;
         String[][] rep = new String[rowCount(quete)][columnCount(quete)];
         int ligne = 0;
         for (int cptligne = 0; cptligne < rowCount(quete); cptligne++) {
@@ -419,19 +442,19 @@ void loadquete() {
                 if (cptcolonne == 5 && stringToInt(getCell(quete, cptligne, 4)) == personne.level) {
                     rep[cptligne][cptcolonne] = "true";
                     ligne = cptligne;
+                    personne.quete_cible = getCell(quete, ligne, 2);
+                    println(personne.quete_cible);
                 } else {
                     rep[cptligne][cptcolonne] = getCell(quete, cptligne, cptcolonne);
                 }
             }
         }
         saveCSV(rep, "jeux/entité/option pnj/quete.csv", ';');
-        personne.quete_cible = getCell(quete, ligne, 2);
-        personne.quete_kill = 0;
     }
 
-    boolean verifierquete() {
+    boolean verifierquete(int ligne) {
         CSVFile current = loadCSV("jeux/entité/option pnj/quete.csv", ';');
-        if (personne.quete_kill >= stringToInt(getCell(current, personne.level, 3))) {
+        if (personne.quete_kill >= stringToInt(getCell(current,ligne , 3))) {
             return true;
         }
         return false;
@@ -457,10 +480,10 @@ void loadquete() {
 
         Monstre m = new Monstre();
         m.nom = nom;
-        m.pvmax = stringToInt(getCell(current, ligne, 1)) * (int) ((1 + (personne.level * 0.2)));
+        m.pvmax = (int) (stringToInt(getCell(current, ligne, 1)) * (1 + ((personne.level-1) * 0.2)));
         m.pv = m.pvmax;
         m.attaquenom = getCell(current, ligne, 2);
-        m.attaquedegat = stringToInt(getCell(current, ligne, 3)) * (int) (1 + (personne.level * 0.10));
+        m.attaquedegat = (int) (stringToInt(getCell(current, ligne, 3)) * (1 + ((personne.level-1) * 0.10)));
         m.esquive = stringToInt(getCell(current, ligne, 4));
 
         return m;
@@ -471,7 +494,7 @@ void loadquete() {
 //////////////////////////////////////////////////////////////////////////
 void afficherinventaire(){
     CSVFile current = loadCSV("jeux/utilisateur/inventaire.csv", ';');
-
+    print(RESET);
     println("\n════════════ INVENTAIRE ════════════");
 
     if (rowCount(current) == 0){
@@ -489,7 +512,6 @@ void afficherinventaire(){
     void utiliserObjet(User nom, Monstre monstre) {
         CSVFile current = loadCSV("jeux/utilisateur/inventaire.csv", ';');
         afficherinventaire();
-        print("<objet>");
         if (rowCount(current) > 0) {
             int ligne = saisie(rowCount(current));
             if (equals(getCell(current, ligne, 1), "soins")) {
@@ -506,7 +528,7 @@ void afficherinventaire(){
                 }
             }
         } else {
-            println("Votre inventaire est vide ! \n<Tips>Faite plus de quete vous aurrez plus d'objet \nLe monstre malin, comme il l’est, en profite pour vous attaquer. ");
+            println("\n\n<Tips> : Faite plus de quete afin d'obtenir plus d'objet \n\n Le monstre malin, comme il est, en profite pour vous attaquer.");
         }
 
     }
@@ -547,7 +569,7 @@ void afficherinventaire(){
             }
         }
         for (int cptcolonne = 0; cptcolonne < columnCount(inventaire); cptcolonne++) {
-            rep[rowCount(inventaire) + 1][cptcolonne] = getCell(current, ligne, cptcolonne);
+            rep[rowCount(inventaire)][cptcolonne] = getCell(current, ligne, cptcolonne);
         }
         saveCSV(rep, "jeux/utilisateur/inventaire.csv");
     }
@@ -574,7 +596,7 @@ void afficherinventaire(){
                 println("["+(end-debut+1)+"] | Annuler\n");
                 trigger = true;
             } else {
-                println("["+(end-debut)+"] Annuler");
+                println("\n["+(end-debut)+"] | Annuler\n");
             }
             int reponse;
             if (trigger) {
@@ -632,26 +654,20 @@ void afficherinventaire(){
 
     void afficherCurrentMonstre(Monstre currentMonstre){
         print(RESET);
-        println(currentMonstre.nom + "      -      pv : "
-                + currentMonstre.pv + "/" + currentMonstre.pvmax+"\n");
+        println("═══════════════ COMBAT ═══════════════");
+        println(" Ennemi : " + currentMonstre.nom);
+        println(" PV Ennemi : " + currentMonstre.pv + "/" + currentMonstre.pvmax);
+        println("══════════════════════════════════════\n");
         afficherSpriteMonstre(currentMonstre.nom);
-        println("Vos pv : " + personne.pv + "/" + personne.pv_max + "\n");
+        println("══════════════════════════════════════\n");
+        println("Vos PV : " + personne.pv + "/" + personne.pv_max + "\n");
     }
 
-    void combat(String monstre) {
+    boolean combat(String monstre) {
         Monstre currentMonstre = newMonstre(monstre);
-        boolean infight = true;
-        while (infight) {
+        while (true) {
             boolean annuler = false;
-            println("═══════════════ COMBAT ═══════════════");
-            println(" Ennemi : " + currentMonstre.nom);
-            println(" PV Ennemi : " + currentMonstre.pv + "/" + currentMonstre.pvmax);
-            println("-------------------------------------");
-
-            afficherSpriteMonstre(currentMonstre.nom);
-
-            println("Vos PV : " + personne.pv + "/" + personne.pv_max);
-            println("-------------------------------------");
+            afficherCurrentMonstre(currentMonstre);
             println("[0] Attaquer");
             println("[1] Utiliser un objet\n");
             int reponse = saisie(1);
@@ -665,6 +681,7 @@ void afficherinventaire(){
                     afficherCurrentMonstre(currentMonstre);
                     boolean question = question();
                     int degats = degats(attaqueChoisie);
+                    print(RESET);
                     if (!question) {
                         println("Mince, vous vous êtes trompé et blessé par la même occasion en vous infligeant "
                                 + (int) (degats / 2) + " dégats...");
@@ -674,7 +691,7 @@ void afficherinventaire(){
                         int random = (int) ((random() * 100) + 1);
 
                         if (random <= currentMonstre.esquive) {
-                            println("Cependant le(a) " + currentMonstre.nom + " a réussi à esquiver !\n");
+                            println("Cependant le/a " + currentMonstre.nom + " a réussi à esquiver !\n");
                         } else {
                             println("Vous avez infligé " + degats + " dégats !\n");
                             currentMonstre.pv = currentMonstre.pv - degats;
@@ -686,12 +703,12 @@ void afficherinventaire(){
             }
             if (!annuler) {
                 if (currentMonstre.pv > 0) {
-                    println("le " + currentMonstre.nom + " a utilisé "
+                    println("le/a " + currentMonstre.nom + " a utilisé "
                             + currentMonstre.attaquenom + " et vous a infligé "
                             + currentMonstre.attaquedegat + " dégats !\n");
 
                     personne.pv = personne.pv - currentMonstre.attaquedegat;
-                    sleep(5000);
+                    waitingForPlayerActivity();
                 } else {
                     print(RESET);
                     println("Bravo vous vous en sortez sain et sauf\n");
@@ -699,16 +716,14 @@ void afficherinventaire(){
                     verifiermonstretuer(currentMonstre.nom);
                     println("Une lumiére magique descend et vous soigne de toute vos blessure");
                     personne.pv = personne.pv_max;
-                    infight=false;
-                    sleep(5000);
+                    return false;
                 }
 
                 if (personne.pv <= 0) {
                     print(RESET);
                     println("Vous avez succombé\n");
                     afficherMisc("mort_joueur");
-                    infight=false;
-                    sleep(5000);
+                    return true;
                 }
             }
         }

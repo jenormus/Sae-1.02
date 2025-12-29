@@ -16,7 +16,7 @@ Embouchure ouest;lieu;Le Donjon;lieu;Crevasse;lieu;Tunnel lumineux;monstre;fanto
 Crevasse;lieu;Embouchure ouest;lieu;Boss room;monstre;bebe_dragon
 Boss room;lieu;Crevasse;monstre;dragon
 Tunnel lumineux;lieu;Embouchure ouest;monstre;fantome
-Embouchure nord;lieu;Le Donjon;lieu;Cul de sac ?;monstre;fantome
+Embouchure nord;lieu;Le Donjon;trap;Cul de sac ?;monstre;fantome
 Cul de sac ?;lieu;Embouchure nord
 Embouchure est;lieu;Le Donjon;lieu;Le puit
 Le puit;lieu;Embouchure est
