@@ -17,6 +17,7 @@ class Main extends Program {
 
     void jeux() {
         print(RESET);
+        CSVFile current = loadCSV("jeux/utilisateur/sauvegarde.csv", ';');
         afficherMisc("title");
 
         println("════════════════════════════════════");
@@ -25,7 +26,6 @@ class Main extends Program {
         println("[0] Nouvelle Partie");
         println("[1] Continuer");
         println("[2] Crédits\n");
-
         int rep = saisie(2);
 
         if (rep == 0) {
@@ -33,7 +33,15 @@ class Main extends Program {
             NouvellePartie();
             menu();
         } else if (rep == 1) {
+            if(equals(getCell(current,0,0),"Joueur")){
+                println("Vous n'avez aucune sauvegarde vous allez donc recommencez :)");
+                waitingForPlayerActivity();
+                debutjeux();
+                NouvellePartie();
+                menu();
+            }else{
             menu();
+            }
         } else if (rep == 2) {
             Credit();
         }
@@ -62,16 +70,20 @@ class Main extends Program {
             }
             println("");
         }
+        println("Tips:Allez a la guild de magie en premier");
+        waitingForPlayerActivity();
 
     }
 
     void NouvellePartie() {
         String[][] save = new String[][]{
-            new String[]{ "Joueur", "" },
+            new String[]{ "admin", "" },
             new String[]{ "100", "100" },
             new String[]{ "1", "" },
             new String[]{ "default", "0" },
-            new String[]{ "La route", "" }};
+            new String[]{ "La route", "" },
+            new String[]{ "0", "" }
+            };
         String[][] save2 = new String[][]{
             new String[]{" "," "},
             new String[]{" "," "},
@@ -96,6 +108,7 @@ class Main extends Program {
             }
         }
         saveCSV(rep, "jeux/entité/option pnj/quete.csv", ';');
+        println("Tips:Ne vous appelez pas Joueur au peur de consequence inatendue");
         personne = newUser();
     }
 
@@ -190,14 +203,17 @@ class Main extends Program {
                     println("");
                 }
                 println("\n[" + nbelements + "] | inventaire");
-                println("\n[" + (nbelements + 1) + "] | Sauvegarder et Quitter");
+                println("\n[" + (nbelements + 1) + "] | Market");
+                println("\n[" + (nbelements + 2) + "] | Sauvegarder et Quitter");
 
                 println("");
-                int action = saisie(nbelements + 1);
+                int action = saisie(nbelements + 2);
                 if (action == nbelements) {
                     afficherinventaire();
                     waitingForPlayerActivity();
-                } else if (action == nbelements + 1) {
+                }  else if (action == nbelements + 1) {
+                    Market();
+                } else if (action == nbelements + 2) {
                     sauvegarder();
                     ingame = false;
                     //"else if" pour l'inventaire a ajouter
@@ -232,7 +248,7 @@ class Main extends Program {
         boolean trigger = true;
 
         do {
-            if(equals(personne.nom,"Joueur")){
+            if(!equals(personne.nom,"Joueur")){
                 print("<"+personne.nom+"> : ");
             }
             resultat = readString();
@@ -336,8 +352,9 @@ class Main extends Program {
                     println(" " + pnj + " vous parle ");
                     println("════════════════════════════════════");
                     println("merci d'avoir accompli la mission vous trouverez une nouvelle mission chez" + getCell(current, ligne, 6));
-                    println("Je vous offre cette potion de soin pour votre bravour.");
+                    println("Je vous offre cette potion de soin et "+250*personne.level+" or  pour votre bravour .");
                     ajouterobjet("potion de soins");
+                    personne.argent=personne.argent+250*personne.level;
                     println("════════════════════════════════════\n");
 
                     encours = false;
@@ -392,7 +409,7 @@ class Main extends Program {
         User utilisateur = new User();
         CSVFile current = loadCSV("jeux/utilisateur/sauvegarde.csv", ';');
 
-        if (equals(getCell(current, 0, 0), " ")) {
+        if (equals(getCell(current, 0, 0), " ") || equals(getCell(current, 0, 0), "admin")) {
             utilisateur.nom = askNom();
         } else {
             utilisateur.nom = getCell(current, 0, 0);
@@ -410,6 +427,7 @@ class Main extends Program {
         utilisateur.pv = stringToInt(getCell(current, 1, 0));
         utilisateur.pv_max = stringToInt(getCell(current, 1, 1));
         utilisateur.currentlieu = getCell(current, 4, 0);
+        utilisateur.argent=stringToInt(getCell(current, 5, 0));
         return utilisateur;
     }
 
@@ -424,7 +442,8 @@ class Main extends Program {
             new String[]{personne.pv + "", personne.pv_max + ""},
             new String[]{personne.level + "", ""},
             new String[]{personne.quete_cible, personne.quete_kill + ""},
-            new String[]{personne.currentlieu + "", ""}
+            new String[]{personne.currentlieu + "", ""},
+            new String[]{personne.argent + "", ""}
         };
         saveCSV(save, "jeux/utilisateur/sauvegarde.csv", ';');
     }
@@ -490,7 +509,7 @@ void loadquete() {
     }
 
     //////////////////////////////////////////////////////////////////////////
-// inventaire
+// inventaire+Market
 //////////////////////////////////////////////////////////////////////////
 void afficherinventaire(){
     CSVFile current = loadCSV("jeux/utilisateur/inventaire.csv", ';');
@@ -507,7 +526,41 @@ void afficherinventaire(){
 
     println("════════════════════════════════════\n");
 }
-
+void Market(){
+    CSVFile current = loadCSV("jeux/utilisateur/objet.csv", ';');
+    CSVFile inv = loadCSV("jeux/utilisateur/inventaire.csv", ';');
+    print(RESET);
+    println("\n════════════ Market ════════════");
+    println("[0]Acheter\n[1]Vendre\n[2]Quitter");
+    int choix=saisie(3);
+    if(choix==0){
+        println("Votre argent :"+personne.argent);
+        println("Que souhaité vous achetez?");
+        for (int ligne = 0; ligne < rowCount(current); ligne++){
+            println("  [" + ligne + "] objet: " + getCell(current, ligne, 0) +" prix: "+getCell(current, ligne, 3)+" or");
+        }
+        int nb=saisie(rowCount(current));
+        if(personne.argent>=stringToInt(getCell(current,nb,3))){
+            ajouterobjet(getCell(current, nb, 0));
+            personne.argent=personne.argent-stringToInt(getCell(current, nb, 3));
+            println("Merci de votre acchat a trés bientot jeune Héros");
+            waitingForPlayerActivity();
+        } else{
+            println("Vous n'avez pas assez d'argent pour achetez cet objet.Je vous prie de quitter mon magasin en revoir !");
+            waitingForPlayerActivity();
+        }
+    } else if(choix==1){
+        println("Que souhaité vous vendre?");
+        afficherinventaire();
+        int choixinv=saisie(rowCount(inv));
+        supprimerobjet(inv,choixinv);
+        waitingForPlayerActivity();
+    } else{
+        println("En revoir et revenez avec plus d'argent");
+        waitingForPlayerActivity();
+    }
+    println("════════════════════════════════════\n");
+}
 
     void utiliserObjet(User nom, Monstre monstre) {
         CSVFile current = loadCSV("jeux/utilisateur/inventaire.csv", ';');
@@ -520,7 +573,10 @@ void afficherinventaire(){
                 if (nom.pv > nom.pv_max) {
                     nom.pv = nom.pv_max;
                 }
-            } else {
+            } if (equals(getCell(current, ligne, 1), "overheal")){
+                nom.pv = nom.pv + stringToInt(getCell(current, ligne, 2))* monstre.attaquedegat;
+                supprimerobjet(current, ligne);
+            }else {
                 monstre.pv = monstre.pv - stringToInt(getCell(current, ligne, 2));
                 supprimerobjet(current, ligne);
                 if (monstre.pv < 0) {
@@ -668,6 +724,10 @@ void afficherinventaire(){
         while (true) {
             boolean annuler = false;
             afficherCurrentMonstre(currentMonstre);
+            if(currentMonstre.pv<=currentMonstre.pvmax/2){
+                println("Le monstre est en mode Berserk.Plus il reste dans ce mode plus fort il devient!");
+                currentMonstre.attaquedegat=currentMonstre.attaquedegat*2;
+            }
             println("[0] Attaquer");
             println("[1] Utiliser un objet\n");
             int reponse = saisie(1);
@@ -713,6 +773,7 @@ void afficherinventaire(){
                     print(RESET);
                     println("Bravo vous vous en sortez sain et sauf\n");
                     afficherMisc("victoire");
+                    personne.argent=personne.argent+150;
                     verifiermonstretuer(currentMonstre.nom);
                     println("Une lumiére magique descend et vous soigne de toute vos blessure");
                     personne.pv = personne.pv_max;

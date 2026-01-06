@@ -6,4 +6,5 @@ class User{
     String quete_cible;
     int quete_kill;
     String currentlieu;
+    int argent;
 }
