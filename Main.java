@@ -62,6 +62,7 @@ class Main extends Program {
 
     void debutjeux() {
         File credit = newFile("presentation.txt");
+        print(RESET);
         while (ready(credit)) {
             String ligne = readLine(credit);
             for (int i = 0; i < length(ligne); i++) {
@@ -77,7 +78,7 @@ class Main extends Program {
 
     void NouvellePartie() {
         String[][] save = new String[][]{
-            new String[]{ "admin", "" },
+            new String[]{ "Joueur", "" },
             new String[]{ "100", "100" },
             new String[]{ "1", "" },
             new String[]{ "default", "0" },
@@ -253,17 +254,27 @@ class Main extends Program {
             }
             resultat = readString();
 
-            if ((length(resultat) != 1)
-                    || (charAt(resultat, 0) < '0'
-                    || charAt(resultat, 0) > (possibilite + '0'))) {
-
+            if (!estNombre(resultat) || stringToInt(resultat) < 0 || stringToInt(resultat) > possibilite) {
                 println("Il semble que votre langue ait fourché");
             } else {
                 trigger = false;
             }
         } while (trigger);
+        return stringToInt(resultat);
+    }
 
-        return charAt(resultat, 0) - '0';
+    boolean estNombre(String valeur){
+        boolean resultat = true;
+        if (length(valeur) == 0){
+            resultat = false;
+        }else{
+            for(int i=0;i<length(valeur);i++){
+                if(charAt(valeur,i) < '0' || charAt(valeur,i) > '9'){
+                    resultat = false;
+                }
+            }
+        }
+        return resultat;
     }
 
     String saisieTexte() {
@@ -409,7 +420,7 @@ class Main extends Program {
         User utilisateur = new User();
         CSVFile current = loadCSV("jeux/utilisateur/sauvegarde.csv", ';');
 
-        if (equals(getCell(current, 0, 0), " ") || equals(getCell(current, 0, 0), "admin")) {
+        if (equals(getCell(current, 0, 0), " ") || equals(getCell(current, 0, 0), "Joueur")) {
             utilisateur.nom = askNom();
         } else {
             utilisateur.nom = getCell(current, 0, 0);
@@ -530,8 +541,9 @@ void Market(){
     CSVFile current = loadCSV("jeux/utilisateur/objet.csv", ';');
     CSVFile inv = loadCSV("jeux/utilisateur/inventaire.csv", ';');
     print(RESET);
-    println("\n════════════ Market ════════════");
-    println("[0]Acheter\n[1]Vendre\n[2]Quitter");
+    println("\n═══════════════════ Market ═══════════════════\n");
+    afficherMisc("vendeur");
+    println("══════════════════════════════════════════════\n[0]Acheter\n[1]Vendre\n[2]Quitter\n════════════════════════════════════\n");
     int choix=saisie(3);
     if(choix==0){
         println("Votre argent :"+personne.argent);
@@ -546,7 +558,7 @@ void Market(){
             println("Merci de votre acchat a trés bientot jeune Héros");
             waitingForPlayerActivity();
         } else{
-            println("Vous n'avez pas assez d'argent pour achetez cet objet.Je vous prie de quitter mon magasin en revoir !");
+            println("Vous n'avez pas assez d'argent pour achetez cet objet.Je vous prie de quitter mon magasin.\n Au revoir !");
             waitingForPlayerActivity();
         }
     } else if(choix==1){
@@ -556,7 +568,7 @@ void Market(){
         supprimerobjet(inv,choixinv);
         waitingForPlayerActivity();
     } else{
-        println("En revoir et revenez avec plus d'argent");
+        println("Au revoir et revenez avec plus d'argent");
         waitingForPlayerActivity();
     }
     println("════════════════════════════════════\n");
@@ -584,7 +596,7 @@ void Market(){
                 }
             }
         } else {
-            println("\n\n<Tips> : Faite plus de quete afin d'obtenir plus d'objet \n\n Le monstre malin, comme il est, en profite pour vous attaquer.");
+            println("\n\n<Tips> : Faite plus de quete afin d'obtenir plus d'objet \n\nLe monstre malin, comme il est, en profite pour vous attaquer.");
         }
 
     }
@@ -708,10 +720,18 @@ void Market(){
         return resultat;
     }
 
-    void afficherCurrentMonstre(Monstre currentMonstre){
+    void afficherCurrentMonstre(Monstre currentMonstre, int berserk){
         print(RESET);
         println("═══════════════ COMBAT ═══════════════");
-        println(" Ennemi : " + currentMonstre.nom);
+        print(" Ennemi : " + currentMonstre.nom);
+        if (berserk>0){
+            print(" (Berserk");
+            if (berserk>1){
+                print(" x"+berserk);
+            }
+            print(")");
+        }
+        println("");
         println(" PV Ennemi : " + currentMonstre.pv + "/" + currentMonstre.pvmax);
         println("══════════════════════════════════════\n");
         afficherSpriteMonstre(currentMonstre.nom);
@@ -721,24 +741,30 @@ void Market(){
 
     boolean combat(String monstre) {
         Monstre currentMonstre = newMonstre(monstre);
+        int berserk = 0;
         while (true) {
             boolean annuler = false;
-            afficherCurrentMonstre(currentMonstre);
             if(currentMonstre.pv<=currentMonstre.pvmax/2){
-                println("Le monstre est en mode Berserk.Plus il reste dans ce mode plus fort il devient!");
+                print(RESET);
+                if (berserk == 0){
+                    println("Le monstre est enragé et entre en mode Berserk.\nPlus il reste dans ce mode plus fort il devient!");
+                }
                 currentMonstre.attaquedegat=currentMonstre.attaquedegat*2;
+                berserk++;
+                waitingForPlayerActivity();
             }
+            afficherCurrentMonstre(currentMonstre,berserk);
             println("[0] Attaquer");
             println("[1] Utiliser un objet\n");
             int reponse = saisie(1);
             if (reponse == 0) {
-                afficherCurrentMonstre(currentMonstre);
+                afficherCurrentMonstre(currentMonstre,berserk);
                 String attaqueChoisie = attaque();
                 if (equals(attaqueChoisie, "annuler")) {
                     annuler = true;
                 }
                 if (!annuler){
-                    afficherCurrentMonstre(currentMonstre);
+                    afficherCurrentMonstre(currentMonstre,berserk);
                     boolean question = question();
                     int degats = degats(attaqueChoisie);
                     print(RESET);
