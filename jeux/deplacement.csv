@@ -12,16 +12,16 @@ L'espace repos;lieu;La cour arrière
 Les toilettes;lieu;La cour arrière;monstre;ogre
 La route;lieu;Guilde de Magie;lieu;Le Donjon;lieu;La Forêt
 Le Donjon;lieu;La route;lieu;Embouchure ouest;lieu;Embouchure nord;lieu;Embouchure est;pnj;gardien
-Embouchure ouest;lieu;Le Donjon;lieu;Crevasse;lieu;Tunnel lumineux;monstre;fantome
+Embouchure ouest;lieu;Le Donjon;lieu;Crevasse;lieu;Tunnel lumineux;bebe_dragon
 Crevasse;lieu;Embouchure ouest;bossroom;Antre sombre;monstre;bebe_dragon
 Antre sombre;lieu;Crevasse;monstre;dragon
 Tunnel lumineux;lieu;Embouchure ouest;monstre;sorciere
-Embouchure nord;lieu;Le Donjon;trap;Cul de sac ?;monstre;fantome
+Embouchure nord;lieu;Le Donjon;trap;Cul de sac ?;monstre;sorciere
 Cul de sac ?;lieu;Embouchure nord
 Embouchure est;lieu;Le Donjon;lieu;Le puit
-Le puit;lieu;Embouchure est
+Le puit;lieu;Embouchure est;monstre;sorciere
 La Forêt;lieu;La route;lieu;Chemin de terre;lieu;La maison;lieu;Chemin de boue;pnj;elf
-Chemin de terre;lieu;La Forêt;monstre;sorciere
+Chemin de terre;lieu;La Forêt;monstre;loup
 Chemin de boue;lieu;La Forêt;monstre;loup
 La maison;lieu;La Forêt;lieu;L'escalier;lieu;La salle à manger;lieu;La cuisine;bossroom;La forge;pnj;gnome
 L'escalier;lieu;La maison;lieu;La chambre;lieu;Le bureau
