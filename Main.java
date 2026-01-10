@@ -12,7 +12,7 @@ class Main extends Program {
     final String RESET = "\033c\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 
     void algorithm() {
-        jeux();
+        ajouterobjet("potion de MortSubite");
     }
 
     void jeux() {
@@ -608,9 +608,11 @@ void Market(){
         }
     } else if(choix==1){
         println("Que souhaité vous vendre?");
+        println("Tips:Chaque vente vous rapporte 250 or qu'importe l'objet");
         afficherinventaire();
         int choixinv=saisie(rowCount(inv));
         supprimerobjet(inv,choixinv);
+        personne.argent+=250;
         waitingForPlayerActivity();
     } else{
         println("Au revoir et revenez avec plus d'argent");
@@ -672,7 +674,8 @@ void Market(){
         CSVFile current = loadCSV("jeux/utilisateur/objet.csv", ';');
         CSVFile inventaire = loadCSV("jeux/utilisateur/inventaire.csv", ';');
         int ligne = 0;
-        String[][] rep = new String[rowCount(inventaire) + 1][columnCount(inventaire)];
+        if(rowCount(inventaire) > 0){
+            String[][] rep = new String[rowCount(inventaire) + 1][columnCount(inventaire)];
         while (!equals(getCell(current, ligne, 0), nom)) {
             ligne++;
         }
@@ -681,10 +684,18 @@ void Market(){
                 rep[cptligne][cptcolonne] = getCell(inventaire, cptligne, cptcolonne);
             }
         }
-        for (int cptcolonne = 0; cptcolonne < columnCount(inventaire); cptcolonne++) {
+        for (int cptcolonne = 0; cptcolonne < columnCount(current)-1; cptcolonne++) {
             rep[rowCount(inventaire)][cptcolonne] = getCell(current, ligne, cptcolonne);
         }
         saveCSV(rep, "jeux/utilisateur/inventaire.csv");
+        } else{
+            String[][] rep = new String[1][columnCount(current)];
+            for (int cptcolonne = 0; cptcolonne < columnCount(current); cptcolonne++) {
+                rep[0][cptcolonne] = getCell(current, ligne, cptcolonne);
+            }
+            saveCSV(rep, "jeux/utilisateur/inventaire.csv");
+        }
+        
     }
 
     //////////////////////////////////////////////////////////////////////////
