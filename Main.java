@@ -71,7 +71,7 @@ class Main extends Program {
             }
             println("");
         }
-        println("Tips:Allez a la guild de magie en premier");
+        println("\nTips : Allez parler à merlin a la guild de magie en premier");
         waitingForPlayerActivity();
 
     }
@@ -109,7 +109,7 @@ class Main extends Program {
             }
         }
         saveCSV(rep, "jeux/entité/option pnj/quete.csv", ';');
-        println("Tips:Ne vous appelez pas Joueur au peur de consequence inatendue");
+        println("Tips : Ne vous appelez pas Joueur au peur de consequence inatendue");
         personne = newUser();
     }
 
@@ -143,30 +143,25 @@ class Main extends Program {
         return loadImage("jeux/entité/Ascii misc/" + misc + ".txt");
     }
 
-    String loadDialoguePNJ(String pnj, boolean quete) {
-        CSVFile current = loadCSV("jeux/entité/option pnj/dialogue.csv", ';');
-        int ligne = 0;
-
-        while (!equals(getCell(current, ligne, 0), pnj)) {
-            ligne++;
-        }
-
-        if (quete) {
-            return getCell(current, ligne, 1);
-        }
-        return getCell(current, ligne, 2);
-    }
-
     void afficherMisc(String image) {
         println(loadSpriteMisc(image));
     }
 
     void afficherSpritePNJ(String pnj) {
+        print(RESET);
         println(loadSpritePNJ(pnj));
     }
 
     void afficherSpriteMonstre(String monstre) {
         println(loadSpriteMonstre(monstre));
+    }
+
+    void afficherLentement(String texte, int puissance){
+        for (int i=0;i<length(texte);i++){
+            print(charAt(texte,i));
+            sleep(puissance);
+        }
+        println("");
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -223,6 +218,11 @@ class Main extends Program {
                     println("Mince, il semble que vous ayez marché sur un piège en entrant, je n'essayerais de revenir ici si j'étais vous !");
                     waitingForPlayerActivity();
                     personne.currentlieu = getCell(lieu, cpt, (action + 1) * 2);
+                } else if (equals(getCell(lieu, cpt, ((action + 1) * 2) - 1), "bossroom")){
+                    if (bossStuff(getCell(lieu, cpt, (action + 1) * 2))){
+                        personne.currentlieu = getCell(lieu, cpt, (action + 1) * 2);
+                    }
+                    waitingForPlayerActivity();
                 } else if (equals(getCell(lieu, cpt, ((action + 1) * 2) - 1), "lieu")) {
                     personne.currentlieu = getCell(lieu, cpt, (action + 1) * 2);
                 } else if (equals(getCell(lieu, cpt, ((action + 1) * 2) - 1), "pnj")) {
@@ -238,6 +238,25 @@ class Main extends Program {
                 println("");
             }
         }
+    }
+
+    boolean bossStuff(String boss_entrer){
+        CSVFile current = loadCSV("jeux/desc_boss.csv", ';');
+        int ligne = 0;
+        print(RESET);
+        while (!equals(boss_entrer,getCell(current,ligne,0))){
+            ligne++;
+        }
+        if (personne.level >= stringToInt(getCell(current,ligne,1))){
+            if (personne.level == stringToInt(getCell(current,ligne,1))){
+                afficherLentement(getCell(current,ligne,2),50);
+            } else {
+                afficherLentement(getCell(current,ligne,3),100);
+            }
+            return true;
+        }
+        println("Vous n'avez pas encore ce qui faut à un magicien pour pénetrer dans ces lieux. Gagnez en force et en connaissance puis revener");
+        return false;
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -344,26 +363,26 @@ class Main extends Program {
         while (encours) {
             if (ligne == (rowCount(current) - 1)) {
 
-                loadDialoguePNJ(pnj, false);
+                blaBlaPnj("Il vous salue et retourne à leur occupation, il ne semble pas avoir besoin de vous dans l'immédiat");
                 encours = false;
             } else if (!(stringToInt(getCell(current, ligne, colonne)) == personne.level)) {
                 ligne++;
             } else if (equals(getCell(current, ligne, 5), "false")) {
                 println("\n════════════════════════════════════");
-                println(" " + pnj + " vous parle ");
+                println(pnj + " vous parle");
                 println("════════════════════════════════════");
-                loadDialoguePNJ(pnj, true);
+                blaBlaPnj(getCell(current, ligne, 1));
                 loadquete();
-                println(getCell(current, ligne, 1) + " " + getCell(current, ligne, 3) + " " + getCell(current, ligne, 2));
+                println("Venez à bout de " + getCell(current, ligne, 3) + " " + getCell(current, ligne, 2)+"(s)");
                 println("════════════════════════════════════\n");
                 encours = false;
             } else if (equals(getCell(current, ligne, 5), "true")) {
                 if (verifierquete(ligne)) {
                     println("\n════════════════════════════════════");
-                    println(" " + pnj + " vous parle ");
+                    println(pnj + " vous parle");
                     println("════════════════════════════════════");
-                    println("merci d'avoir accompli la mission vous trouverez une nouvelle mission chez" + getCell(current, ligne, 6));
-                    println("Je vous offre cette potion de soin et "+250*personne.level+" or  pour votre bravour .");
+                    blaBlaPnj(getCell(current, ligne, 6));
+                    blaBlaPnj("Je vous offre cette potion de soin et "+250*personne.level+" or  pour votre bravour .");
                     ajouterobjet("potion de soins");
                     personne.argent=personne.argent+250*personne.level;
                     println("════════════════════════════════════\n");
@@ -373,14 +392,33 @@ class Main extends Program {
                     println("\n════════════════════════════════════");
                     println(" " + pnj + " vous parle ");
                     println("════════════════════════════════════");
-                    println("Petit/Petite chenapan retourne travailler");
+                    println("*"+pnj+" ne semble pas vous remarquer. Essayez de lui reparler quand vous aurez fini sa quête*");
                     println("════════════════════════════════════\n");
-                    println(personne.quete_kill);
                     encours = false;
                 }
             }
         }
         waitingForPlayerActivity();
+    }
+
+    void blaBlaPnj(String texte){
+        String result = "";
+        boolean ast = false;
+        for (int i=0;i<length(texte);i++){
+            char lettre = charAt(texte,i);
+            if (lettre == '?'){
+                result = result + "?\n";
+            } else if (lettre == '*'){
+                if (!ast){
+                    result = result + "\n*";
+                } else {
+                    result = result + "*\n";
+                }
+            } else {
+                result = result + lettre;
+            }
+        }
+        afficherLentement(result,20);
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -473,7 +511,6 @@ void loadquete() {
                     rep[cptligne][cptcolonne] = "true";
                     ligne = cptligne;
                     personne.quete_cible = getCell(quete, ligne, 2);
-                    println(personne.quete_cible);
                 } else {
                     rep[cptligne][cptcolonne] = getCell(quete, cptligne, cptcolonne);
                 }
@@ -510,10 +547,16 @@ void loadquete() {
 
         Monstre m = new Monstre();
         m.nom = nom;
-        m.pvmax = (int) (stringToInt(getCell(current, ligne, 1)) * (1 + ((personne.level-1) * 0.2)));
+        m.pvmax = stringToInt(getCell(current, ligne, 1));
+        if (equals("normal",getCell(current, ligne, 5))){
+            m.pvmax = (int) (m.pvmax * (1 + ((personne.level-1) * 0.2)));
+        }    
         m.pv = m.pvmax;
         m.attaquenom = getCell(current, ligne, 2);
-        m.attaquedegat = (int) (stringToInt(getCell(current, ligne, 3)) * (1 + ((personne.level-1) * 0.10)));
+        m.attaquedegat = stringToInt(getCell(current, ligne, 3));
+        if (equals("normal",getCell(current, ligne, 5))){
+            m.attaquedegat = (int)( m.attaquedegat * (1 + ((personne.level-1) * 0.05)));
+        }
         m.esquive = stringToInt(getCell(current, ligne, 4));
 
         return m;
