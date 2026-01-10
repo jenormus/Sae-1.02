@@ -8,7 +8,7 @@ class Main extends Program {
 // VARIABLES & LANCEMENT
 //////////////////////////////////////////////////////////////////////////
 
-    User personne = newUser();
+    User personne;
     final String RESET = "\033c\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 
     void algorithm() {
@@ -34,6 +34,7 @@ class Main extends Program {
             menu();
         } else if (rep == 1) {
             if(equals(getCell(current,0,0),"Joueur")){
+                print(RESET);
                 println("Vous n'avez aucune sauvegarde vous allez donc recommencez :)");
                 waitingForPlayerActivity();
                 debutjeux();
@@ -268,7 +269,7 @@ class Main extends Program {
         boolean trigger = true;
 
         do {
-            if(!equals(personne.nom,"Joueur")){
+            if(!(personne == null)){
                 print("<"+personne.nom+"> : ");
             }
             resultat = readString();
