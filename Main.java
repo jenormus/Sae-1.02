@@ -110,7 +110,8 @@ class Main extends Program {
             }
         }
         saveCSV(rep, "jeux/entité/option pnj/quete.csv", ';');
-        println("<Tips> : Ne vous appelez pas Joueur au peur de consequence inatendue");
+        print(RESET);
+        println("<Tips> : Ne vous appelez pas Joueur au peur de consequence inatendue\n");
         personne = newUser();
     }
 
@@ -482,7 +483,7 @@ class Main extends Program {
     }
 
     String askNom() {
-        println("Vous me semblez nouveau/nouvelle ici, je ne crois pas être familier avec votre nom, pourriez vous me le donner ?");
+        println("Vous me semblez nouveau/nouvelle ici, je ne crois pas être familier avec votre nom, pourriez vous me le donner ?\n");
         return saisieTexte();
     }
 
@@ -694,6 +695,7 @@ void Market(){
         int page = 0;
         int nbPages = (length(attaquePossibles) + 8 - 1) / 8;
         while (true) {
+            println("══════════════════════════════════════");
             boolean trigger = false;
             int debut = page * 8;
             int end = debut + 8;
@@ -705,11 +707,12 @@ void Market(){
             }
             if (nbPages!=1){
                 println("["+(end-debut)+"] | Suivant");
-                println("["+(end-debut+1)+"] | Annuler\n");
+                println("["+(end-debut+1)+"] | Annuler");
                 trigger = true;
             } else {
-                println("\n["+(end-debut)+"] | Annuler\n");
+                println("\n["+(end-debut)+"] | Annuler");
             }
+            println("══════════════════════════════════════\n");
             int reponse;
             if (trigger) {
                 reponse = saisie(end - debut + 1);
@@ -779,8 +782,51 @@ void Market(){
         println(" PV Ennemi : " + currentMonstre.pv + "/" + currentMonstre.pvmax);
         println("══════════════════════════════════════\n");
         afficherSpriteMonstre(currentMonstre.nom);
-        println("══════════════════════════════════════\n");
-        println("Vos PV : " + personne.pv + "/" + personne.pv_max + "\n");
+        println("══════════════════════════════════════");
+        println("Vos PV : " + personne.pv + "/" + personne.pv_max);
+    }
+
+    void resultatAttaque(String attaqueChoisie, Monstre currentMonstre){
+        boolean question = question();
+        int degats = degats(attaqueChoisie);
+        print(RESET);
+        if (!question) {
+            println("Mince, vous vous êtes trompé et blessé par la même occasion en vous infligeant "
+                    + (int) (degats / 2) + " dégats...");
+            personne.pv = personne.pv - ((int) (degats / 2));
+        } else {
+            println("Bien joué, vous avez réussi à attaquer !\n");
+            int random = (int) ((random() * 100) + 1);
+            if (random <= currentMonstre.esquive) {
+                println("Cependant le/a " + currentMonstre.nom + " a réussi à esquiver !\n");
+            } else {
+                println("Vous avez infligé " + degats + " dégats !\n");
+                currentMonstre.pv = currentMonstre.pv - degats;
+            }
+        }
+    }
+
+    void mortJoueur(){
+        print(RESET);
+        println("Vous avez succombé\n");
+        afficherMisc("mort_joueur");
+    }
+
+    void mortMonstre(Monstre currentMonstre){
+        print(RESET);
+        println("Bravo vous vous en sortez sain et sauf\n");
+        afficherMisc("victoire");
+        personne.argent=personne.argent+150;
+        verifiermonstretuer(currentMonstre.nom);
+        println("Une lumiére magique descend et vous soigne de toute vos blessure");
+        personne.pv = personne.pv_max;
+    }
+
+    void attaqueMonstre(Monstre currentMonstre){
+        println("le/a " + currentMonstre.nom + " a utilisé "
+                + currentMonstre.attaquenom + " et vous a infligé "
+                + currentMonstre.attaquedegat + " dégats !\n");
+        personne.pv = personne.pv - currentMonstre.attaquedegat;
     }
 
     boolean combat(String monstre) {
@@ -798,8 +844,10 @@ void Market(){
                 waitingForPlayerActivity();
             }
             afficherCurrentMonstre(currentMonstre,berserk);
+            println("══════════════════════════════════════");
             println("[0] Attaquer");
-            println("[1] Utiliser un objet\n");
+            println("[1] Utiliser un objet");
+            println("══════════════════════════════════════\n");
             int reponse = saisie(1);
             if (reponse == 0) {
                 afficherCurrentMonstre(currentMonstre,berserk);
@@ -809,51 +857,21 @@ void Market(){
                 }
                 if (!annuler){
                     afficherCurrentMonstre(currentMonstre,berserk);
-                    boolean question = question();
-                    int degats = degats(attaqueChoisie);
-                    print(RESET);
-                    if (!question) {
-                        println("Mince, vous vous êtes trompé et blessé par la même occasion en vous infligeant "
-                                + (int) (degats / 2) + " dégats...");
-                        personne.pv = personne.pv - ((int) (degats / 2));
-                    } else {
-                        println("Bien joué, vous avez réussi à attaquer !\n");
-                        int random = (int) ((random() * 100) + 1);
-
-                        if (random <= currentMonstre.esquive) {
-                            println("Cependant le/a " + currentMonstre.nom + " a réussi à esquiver !\n");
-                        } else {
-                            println("Vous avez infligé " + degats + " dégats !\n");
-                            currentMonstre.pv = currentMonstre.pv - degats;
-                        }
-                    }
+                    resultatAttaque(attaqueChoisie,currentMonstre);
                 }
             } else {
                 utiliserObjet(personne, currentMonstre);
             }
             if (!annuler) {
                 if (currentMonstre.pv > 0) {
-                    println("le/a " + currentMonstre.nom + " a utilisé "
-                            + currentMonstre.attaquenom + " et vous a infligé "
-                            + currentMonstre.attaquedegat + " dégats !\n");
-
-                    personne.pv = personne.pv - currentMonstre.attaquedegat;
+                    attaqueMonstre(currentMonstre);
                     waitingForPlayerActivity();
                 } else {
-                    print(RESET);
-                    println("Bravo vous vous en sortez sain et sauf\n");
-                    afficherMisc("victoire");
-                    personne.argent=personne.argent+150;
-                    verifiermonstretuer(currentMonstre.nom);
-                    println("Une lumiére magique descend et vous soigne de toute vos blessure");
-                    personne.pv = personne.pv_max;
+                    mortMonstre(currentMonstre);
                     return false;
                 }
-
                 if (personne.pv <= 0) {
-                    print(RESET);
-                    println("Vous avez succombé\n");
-                    afficherMisc("mort_joueur");
+                    mortJoueur();
                     return true;
                 }
             }
