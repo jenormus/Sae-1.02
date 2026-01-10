@@ -72,7 +72,7 @@ class Main extends Program {
             }
             println("");
         }
-        println("\nTips : Allez parler à merlin a la guild de magie en premier");
+        println("\n<Tips> : Allez parler à merlin a la guild de magie en premier");
         waitingForPlayerActivity();
 
     }
@@ -110,7 +110,7 @@ class Main extends Program {
             }
         }
         saveCSV(rep, "jeux/entité/option pnj/quete.csv", ';');
-        println("Tips : Ne vous appelez pas Joueur au peur de consequence inatendue");
+        println("<Tips> : Ne vous appelez pas Joueur au peur de consequence inatendue");
         personne = newUser();
     }
 
