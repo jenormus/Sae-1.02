@@ -87,16 +87,9 @@ class Main extends Program {
             new String[]{ "0", "" }
             };
         String[][] save2 = new String[][]{
-            new String[]{" "," "},
-            new String[]{" "," "},
-            new String[]{" "," "},
-            new String[]{" "," "},
-            new String[]{" "," "}};
-        String[][] save3 = new String[][]{
             new String[]{" "}};
         saveCSV(save, "jeux/utilisateur/sauvegarde.csv", ';');
-        saveCSV(save2, "jeux/utilisateur/user.csv", ';');
-        saveCSV(save3, "jeux/utilisateur/inventaire.csv", ';');
+        saveCSV(save2, "jeux/utilisateur/inventaire.csv", ';');
         CSVFile quete = loadCSV("jeux/entité/option pnj/quete.csv", ';');
         String[][] rep = new String[rowCount(quete)][columnCount(quete)];
         int ligne = 0;
@@ -375,7 +368,8 @@ class Main extends Program {
                 println("════════════════════════════════════");
                 blaBlaPnj(getCell(current, ligne, 1));
                 loadquete();
-                println("Venez à bout de " + getCell(current, ligne, 3) + " " + getCell(current, ligne, 2)+"(s)");
+                println("════════════════════════════════════");
+                println("*Venez à bout de " + getCell(current, ligne, 3) + " " + getCell(current, ligne, 2)+"(s)*");
                 println("════════════════════════════════════\n");
                 encours = false;
             } else if (equals(getCell(current, ligne, 5), "true")) {
@@ -383,8 +377,11 @@ class Main extends Program {
                     println("\n════════════════════════════════════");
                     println(pnj + " vous parle");
                     println("════════════════════════════════════");
-                    blaBlaPnj(getCell(current, ligne, 6));
                     blaBlaPnj("Je vous offre cette potion de soin et "+250*personne.level+" or  pour votre bravour .");
+                    personne.pv_max=personne.pv_max+10;
+                    personne.pv=personne.pv_max;
+                    println("════════════════════════════════════");
+                    blaBlaPnj(getCell(current, ligne, 6));
                     ajouterobjet("potion de soins");
                     personne.argent=personne.argent+250*personne.level;
                     println("════════════════════════════════════\n");
@@ -815,6 +812,7 @@ void Market(){
                 currentMonstre.pv = currentMonstre.pv - degats;
             }
         }
+        waitingForPlayerActivity();
     }
 
     void mortJoueur(){
