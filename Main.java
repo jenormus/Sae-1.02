@@ -72,7 +72,6 @@ class Main extends Program {
             }
             println("");
         }
-        println("\n<Tips> : Allez parler à merlin a la guild de magie en premier");
         waitingForPlayerActivity();
 
     }
@@ -89,7 +88,7 @@ class Main extends Program {
         String[][] save2 = new String[][]{
             new String[]{" "}};
         saveCSV(save, "jeux/utilisateur/sauvegarde.csv", ';');
-        saveCSV(save2, "jeux/utilisateur/inventaire.csv", ';');
+        saveCSV(save2, "jeux/utilisateur/inventaire.csv");
         CSVFile quete = loadCSV("jeux/entité/option pnj/quete.csv", ';');
         String[][] rep = new String[rowCount(quete)][columnCount(quete)];
         int ligne = 0;
@@ -106,6 +105,9 @@ class Main extends Program {
         print(RESET);
         println("<Tips> : Ne vous appelez pas Joueur au peur de consequence inatendue\n");
         personne = newUser();
+        print(RESET);
+        println("\n<Tips> : Allez parler à merlin dans le Hall de la guild de magie en premier");
+        waitingForPlayerActivity();
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -207,7 +209,6 @@ class Main extends Program {
                 } else if (action == nbelements + 2) {
                     sauvegarder();
                     ingame = false;
-                    //"else if" pour l'inventaire a ajouter
                 } else if (equals(getCell(lieu, cpt, ((action + 1) * 2) - 1),"trap")) {
                     print(RESET);
                     println("Mince, il semble que vous ayez marché sur un piège en entrant, je n'essayerais de revenir ici si j'étais vous !");
@@ -357,8 +358,9 @@ class Main extends Program {
 
         while (encours) {
             if (ligne == (rowCount(current) - 1)) {
-
+                println("════════════════════════════════════");
                 blaBlaPnj("Il vous salue et retourne à leur occupation, il ne semble pas avoir besoin de vous dans l'immédiat");
+                println("════════════════════════════════════");
                 encours = false;
             } else if (!(stringToInt(getCell(current, ligne, colonne)) == personne.level)) {
                 ligne++;
@@ -377,13 +379,14 @@ class Main extends Program {
                     println("\n════════════════════════════════════");
                     println(pnj + " vous parle");
                     println("════════════════════════════════════");
-                    blaBlaPnj("Je vous offre cette potion de soin et "+250*personne.level+" or  pour votre bravour .");
+                    blaBlaPnj("Il vous offre une potion de soin et "+250*personne.level+" or pour votre bravour .");
+                    ajouterobjet("potion de soins");
+                    personne.argent=personne.argent+250*personne.level; 
+                    personne.level++;
                     personne.pv_max=personne.pv_max+10;
                     personne.pv=personne.pv_max;
                     println("════════════════════════════════════");
                     blaBlaPnj(getCell(current, ligne, 6));
-                    ajouterobjet("potion de soins");
-                    personne.argent=personne.argent+250*personne.level;
                     println("════════════════════════════════════\n");
 
                     encours = false;
@@ -565,42 +568,44 @@ void loadquete() {
 // inventaire+Market
 //////////////////////////////////////////////////////////////////////////
 void afficherinventaire(){
-    CSVFile current = loadCSV("jeux/utilisateur/inventaire.csv", ';');
+    CSVFile current = loadCSV("jeux/utilisateur/inventaire.csv");
     print(RESET);
     println("\n════════════ INVENTAIRE ════════════");
 
     if (rowCount(current) == 0){
         println("  (Inventaire vide)");
+        println("════════════════════════════════════\n");
+        waitingForPlayerActivity();
     } else {
         for (int ligne = 0; ligne < rowCount(current); ligne++){
             println("  [" + ligne + "] " + getCell(current, ligne, 0));
         }
+        println("════════════════════════════════════\n");
     }
-
-    println("════════════════════════════════════\n");
 }
+
 void Market(){
     CSVFile current = loadCSV("jeux/utilisateur/objet.csv", ';');
-    CSVFile inv = loadCSV("jeux/utilisateur/inventaire.csv", ';');
+    CSVFile inv = loadCSV("jeux/utilisateur/inventaire.csv");
     print(RESET);
     println("\n═══════════════════ Market ═══════════════════\n");
     afficherMisc("vendeur");
     println("══════════════════════════════════════════════\n[0]Acheter\n[1]Vendre\n[2]Quitter\n════════════════════════════════════\n");
-    int choix=saisie(3);
+    int choix=saisie(2);
     if(choix==0){
-        println("Votre argent :"+personne.argent);
+        println("\nVotre argent :"+personne.argent+"\n");
         println("Que souhaité vous achetez?");
         for (int ligne = 0; ligne < rowCount(current); ligne++){
             println("  [" + ligne + "] objet: " + getCell(current, ligne, 0) +" prix: "+getCell(current, ligne, 3)+" or");
         }
-        int nb=saisie(rowCount(current));
+        int nb=saisie(rowCount(current)-1);
         if(personne.argent>=stringToInt(getCell(current,nb,3))){
             ajouterobjet(getCell(current, nb, 0));
             personne.argent=personne.argent-stringToInt(getCell(current, nb, 3));
             println("Merci de votre acchat a trés bientot jeune Héros");
             waitingForPlayerActivity();
         } else{
-            println("Vous n'avez pas assez d'argent pour achetez cet objet.Je vous prie de quitter mon magasin.\n Au revoir !");
+            println("Vous n'avez pas assez d'argent pour achetez cet objet. Je vous prie de quitter mon magasin.\nAu revoir !");
             waitingForPlayerActivity();
         }
     } else if(choix==1){
@@ -612,27 +617,27 @@ void Market(){
         personne.argent+=250;
         waitingForPlayerActivity();
     } else{
-        println("Au revoir et revenez avec plus d'argent");
+        println("\nAu revoir et revenez avec plus d'argent");
         waitingForPlayerActivity();
     }
     println("════════════════════════════════════\n");
 }
 
-    void utiliserObjet(User nom, Monstre monstre) {
-        CSVFile current = loadCSV("jeux/utilisateur/inventaire.csv", ';');
+    void utiliserObjet(Monstre monstre) {
+        CSVFile current = loadCSV("jeux/utilisateur/inventaire.csv");
         afficherinventaire();
         if (rowCount(current) > 0) {
             int ligne = saisie(rowCount(current));
             if (equals(getCell(current, ligne, 1), "soins")) {
-                nom.pv = nom.pv + stringToInt(getCell(current, ligne, 2));
+                personne.pv = personne.pv + stringToInt(getCell(current, ligne, 2));
                 supprimerobjet(current, ligne);
-                if (nom.pv > nom.pv_max) {
-                    nom.pv = nom.pv_max;
+                if (personne.pv > personne.pv_max) {
+                    personne.pv = personne.pv_max;
                 }
-            } if (equals(getCell(current, ligne, 1), "overheal")){
-                nom.pv = nom.pv + stringToInt(getCell(current, ligne, 2))* monstre.attaquedegat;
+            } else if (equals(getCell(current, ligne, 1), "overheal")){
+                personne.pv = personne.pv + stringToInt(getCell(current, ligne, 2))* monstre.attaquedegat;
                 supprimerobjet(current, ligne);
-            }else {
+            } else {
                 monstre.pv = monstre.pv - stringToInt(getCell(current, ligne, 2));
                 supprimerobjet(current, ligne);
                 if (monstre.pv < 0) {
@@ -641,6 +646,7 @@ void Market(){
             }
         } else {
             println("\n\n<Tips> : Faite plus de quete afin d'obtenir plus d'objet \n\nLe monstre malin, comme il est, en profite pour vous attaquer.");
+            waitingForPlayerActivity();
         }
 
     }
@@ -664,12 +670,12 @@ void Market(){
             ind++;
         }
 
-        saveCSV(rep, "jeux/utilisateur/inventaire.csv", ';');
+        saveCSV(rep, "jeux/utilisateur/inventaire.csv");
     }
 
     void ajouterobjet(String nom) {
         CSVFile current = loadCSV("jeux/utilisateur/objet.csv", ';');
-        CSVFile inventaire = loadCSV("jeux/utilisateur/inventaire.csv", ';');
+        CSVFile inventaire = loadCSV("jeux/utilisateur/inventaire.csv");
         int ligne = 0;
         if(rowCount(inventaire) > 0){
             String[][] rep = new String[rowCount(inventaire) + 1][columnCount(inventaire)];
@@ -782,7 +788,7 @@ void Market(){
         if (berserk>0){
             print(" (Berserk");
             if (berserk>1){
-                print(" x"+berserk);
+                print(" niveau "+berserk);
             }
             print(")");
         }
@@ -832,10 +838,12 @@ void Market(){
     }
 
     void attaqueMonstre(Monstre currentMonstre){
+        print(RESET);
         println("le/a " + currentMonstre.nom + " a utilisé "
                 + currentMonstre.attaquenom + " et vous a infligé "
                 + currentMonstre.attaquedegat + " dégats !\n");
         personne.pv = personne.pv - currentMonstre.attaquedegat;
+        waitingForPlayerActivity();
     }
 
     boolean combat(String monstre) {
@@ -847,10 +855,10 @@ void Market(){
                 print(RESET);
                 if (berserk == 0){
                     println("Le monstre est enragé et entre en mode Berserk.\nPlus il reste dans ce mode plus fort il devient!");
+                    waitingForPlayerActivity();
                 }
-                currentMonstre.attaquedegat=currentMonstre.attaquedegat*2;
+                currentMonstre.attaquedegat=(int) (currentMonstre.attaquedegat*1.25);
                 berserk++;
-                waitingForPlayerActivity();
             }
             afficherCurrentMonstre(currentMonstre,berserk);
             println("══════════════════════════════════════");
@@ -869,12 +877,11 @@ void Market(){
                     resultatAttaque(attaqueChoisie,currentMonstre);
                 }
             } else {
-                utiliserObjet(personne, currentMonstre);
+                utiliserObjet(currentMonstre);
             }
             if (!annuler) {
                 if (currentMonstre.pv > 0) {
                     attaqueMonstre(currentMonstre);
-                    waitingForPlayerActivity();
                 } else {
                     mortMonstre(currentMonstre);
                     return false;
