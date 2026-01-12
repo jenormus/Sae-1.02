@@ -610,9 +610,9 @@ void Market(){
         }
     } else if(choix==1){
         if (rowCount(inv) > 0){
+        afficherinventaire();
         println("Que souhaité vous vendre?");
         println("Tips:Chaque vente vous rapporte 250 or qu'importe l'objet");
-        afficherinventaire();
         int choixinv=saisie(rowCount(inv));
         supprimerobjet(inv,choixinv);
         personne.argent+=250;
