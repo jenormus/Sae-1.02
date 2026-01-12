@@ -646,7 +646,7 @@ void Market(){
     }
 
     void supprimerobjet(CSVFile current, int ligne) {
-
+        if(rowCount(current)>0){
         String[][] rep = new String[rowCount(current) - 1][columnCount(current)];
 
         int ind = 0;
@@ -665,6 +665,10 @@ void Market(){
         }
 
         saveCSV(rep, "jeux/utilisateur/inventaire.csv", ';');
+        } else{
+            String[][] rep = new String[]{" "}};
+            saveCSV(rep, "jeux/utilisateur/inventaire.csv", ';');
+        }
     }
 
     void ajouterobjet(String nom) {
