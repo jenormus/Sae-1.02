@@ -672,7 +672,7 @@ void Market(){
 
         saveCSV(rep, "jeux/utilisateur/inventaire.csv", ';');
         } else{
-            String[][] rep = new String[]{" "}};
+            String[][] rep = new String[]{" "};
             saveCSV(rep, "jeux/utilisateur/inventaire.csv", ';');
         }
     }
