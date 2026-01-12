@@ -905,12 +905,12 @@ void Market(){
         }
     }
 
-}
+
 
 //////////////////////////////////////////////////////
 //TEST
 //////////////////////////////////////////////////////
-//User joueur = new User();
+User joueur ;
 
 //////////////////////////////////////////////////////
 // ALGORITHME PRINCIPAL (MODE TEST)
@@ -1101,4 +1101,5 @@ int countAttaques(CSVFile atk, int niveau) {
         cpt++;
     }
     return cpt;
+}
 }
