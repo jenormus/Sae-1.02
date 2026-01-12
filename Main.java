@@ -578,7 +578,7 @@ void afficherinventaire(){
         println("════════════════════════════════════\n");
     } else {
         for (int ligne = 0; ligne < rowCount(current); ligne++){
-            println("  [" + ligne + "] " + getCell(current, ligne, 0) + getCell(current, ligne, 2));
+            println("  [" + ligne + "] " + getCell(current, ligne, 0) + " " + getCell(current, ligne, 2));
         }
         println("════════════════════════════════════\n");
     }
@@ -609,7 +609,7 @@ void Market(){
             waitingForPlayerActivity();
         }
     } else if(choix==1){
-        if (rowCount(current) > 0){
+        if (rowCount(inv) > 0){
         println("Que souhaité vous vendre?");
         println("Tips:Chaque vente vous rapporte 250 or qu'importe l'objet");
         afficherinventaire();
@@ -618,6 +618,7 @@ void Market(){
         personne.argent+=250;
         waitingForPlayerActivity();
         } else{
+            afficherinventaire();
             println("Vous n'avez aucun objet pensez a acheter une potion");
             waitingForPlayerActivity();
         }
