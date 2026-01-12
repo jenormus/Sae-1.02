@@ -55,7 +55,6 @@ class Main extends Program {
         File credit = newFile("../ressources/credit.txt");
         while (ready(credit)) {
             println("   " + readLine(credit));
-            sleep(1000);
         }
 
         println("\n════════════════════════════════════════\n");
@@ -69,7 +68,6 @@ class Main extends Program {
             String ligne = readLine(credit);
             for (int i = 0; i < length(ligne); i++) {
                 print(charAt(ligne, i));
-                sleep(50);
             }
             println("");
         }
