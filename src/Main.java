@@ -17,7 +17,7 @@ class Main extends Program {
 
     void jeux() {
         print(RESET);
-        CSVFile current = loadCSV("jeux/utilisateur/sauvegarde.csv", ';');
+        CSVFile current = loadCSV("../ressources/utilisateur/sauvegarde.csv", ';');
         afficherMisc("title");
 
         println("════════════════════════════════════");
@@ -52,7 +52,7 @@ class Main extends Program {
     void Credit() {
         println("\n════════════════ CRÉDITS ════════════════\n");
 
-        File credit = newFile("credit.txt");
+        File credit = newFile("../ressources/credit.txt");
         while (ready(credit)) {
             println("   " + readLine(credit));
             sleep(1000);
@@ -63,7 +63,7 @@ class Main extends Program {
     }
 
     void debutjeux() {
-        File credit = newFile("presentation.txt");
+        File credit = newFile("../ressources/presentation.txt");
         print(RESET);
         while (ready(credit)) {
             String ligne = readLine(credit);
@@ -88,9 +88,9 @@ class Main extends Program {
             };
         String[][] save2 = new String[][]{
             new String[]{" "}};
-        saveCSV(save, "jeux/utilisateur/sauvegarde.csv", ';');
-        saveCSV(save2, "jeux/utilisateur/inventaire.csv", ';');
-        CSVFile quete = loadCSV("jeux/entité/option pnj/quete.csv", ';');
+        saveCSV(save, "../ressources/utilisateur/sauvegarde.csv", ';');
+        saveCSV(save2, "../ressources/utilisateur/inventaire.csv", ';');
+        CSVFile quete = loadCSV("../ressources/entité/option pnj/quete.csv", ';');
         String[][] rep = new String[rowCount(quete)][columnCount(quete)];
         int ligne = 0;
         for (int cptligne = 0; cptligne < rowCount(quete); cptligne++) {
@@ -102,9 +102,9 @@ class Main extends Program {
                 }
             }
         }
-        saveCSV(rep, "jeux/entité/option pnj/quete.csv", ';');
+        saveCSV(rep, "../ressources/entité/option pnj/quete.csv", ';');
         print(RESET);
-        println("<Tips> : Ne vous appelez pas Joueur au peur de consequence inatendue\n");
+        println("<Tips> : Ne vous appelez pas \"Joueur\" au peur de consequence inatendue\n");
         personne = newUser();
         print(RESET);
         println("\n<Tips> : Allez parler à merlin dans le Hall de la guild de magie en premier");
@@ -130,15 +130,15 @@ class Main extends Program {
 //////////////////////////////////////////////////////////////////////////
 
     String loadSpritePNJ(String pnj) {
-        return loadImage("jeux/entité/Ascii art pnj/" + pnj + ".txt");
+        return loadImage("../ressources/entité/Ascii art pnj/" + pnj + ".txt");
     }
 
     String loadSpriteMonstre(String monstre) {
-        return loadImage("jeux/entité/Ascii art monstre/" + monstre + ".txt");
+        return loadImage("../ressources/entité/Ascii art monstre/" + monstre + ".txt");
     }
 
     String loadSpriteMisc(String misc) {
-        return loadImage("jeux/entité/Ascii misc/" + misc + ".txt");
+        return loadImage("../ressources/entité/Ascii misc/" + misc + ".txt");
     }
 
     void afficherMisc(String image) {
@@ -167,16 +167,16 @@ class Main extends Program {
 //////////////////////////////////////////////////////////////////////////
     
     void menu() {
-        CSVFile current = loadCSV("jeux/entité/option pnj/quete.csv", ';');
+        CSVFile current = loadCSV("../ressources/entité/option pnj/quete.csv", ';');
         boolean ingame = true;
         while (ingame) {
             print(RESET);
             if (personne.level >= rowCount(current)) {
                 ingame = false;
-                println("Merci d'avoir jouer a notre magnifique jeux qui vaut surement un 20/20");
+                println("Merci d'avoir jouer a notre magnifique jeu qui vaut surement un 20/20");
                 Credit();
             } else {
-                CSVFile lieu = loadCSV("jeux/deplacement.csv", ';');
+                CSVFile lieu = loadCSV("../ressources/deplacement.csv", ';');
                 int cpt = 0;
                 while (!equals(getCell(lieu, cpt, 0), personne.currentlieu)) {
                     cpt++;
@@ -192,7 +192,7 @@ class Main extends Program {
                     }
                     print(" - " + getCell(lieu, cpt, ((i + 1) * 2)));
                     if(i==0 && !equals(personne.currentlieu,"La route")){
-                        print(" (zone précédente)\n");
+                        print(" (zone en arrière)\n");
                     }
                     println("");
                 }
@@ -238,7 +238,7 @@ class Main extends Program {
     }
 
     boolean bossStuff(String boss_entrer){
-        CSVFile current = loadCSV("jeux/desc_boss.csv", ';');
+        CSVFile current = loadCSV("../ressources/entité/desc_boss.csv", ';');
         int ligne = 0;
         print(RESET);
         while (!equals(boss_entrer,getCell(current,ligne,0))){
@@ -321,7 +321,7 @@ class Main extends Program {
 
     String[] loadQuestion() {
         String[] resultat = new String[6];
-        CSVFile current = loadCSV("jeux/systeme de magie/question.csv", ';');
+        CSVFile current = loadCSV("../ressources/systeme de magie/question.csv", ';');
 
         int nbligne = rowCount(current);
         int ligne = (int) random(0, nbligne-1);
@@ -347,7 +347,7 @@ class Main extends Program {
     void loadPnj(String pnj) {
         afficherSpritePNJ(pnj);
 
-        CSVFile current = loadCSV("jeux/entité/option pnj/quete.csv", ';');
+        CSVFile current = loadCSV("../ressources/entité/option pnj/quete.csv", ';');
         int ligne = 0;
         String rep = "";
         boolean encours = true;
@@ -459,7 +459,7 @@ class Main extends Program {
 
     User newUser() {
         User utilisateur = new User();
-        CSVFile current = loadCSV("jeux/utilisateur/sauvegarde.csv", ';');
+        CSVFile current = loadCSV("../ressources/utilisateur/sauvegarde.csv", ';');
 
         if (equals(getCell(current, 0, 0), " ") || equals(getCell(current, 0, 0), "Joueur")) {
             utilisateur.nom = askNom();
@@ -497,14 +497,14 @@ class Main extends Program {
             new String[]{personne.currentlieu + "", ""},
             new String[]{personne.argent + "", ""}
         };
-        saveCSV(save, "jeux/utilisateur/sauvegarde.csv", ';');
+        saveCSV(save, "../ressources/utilisateur/sauvegarde.csv", ';');
     }
 
     //////////////////////////////////////////////////////////////////////////
 // quete
 //////////////////////////////////////////////////////////////////////////
 void loadquete() {
-        CSVFile quete = loadCSV("jeux/entité/option pnj/quete.csv", ';');
+        CSVFile quete = loadCSV("../ressources/entité/option pnj/quete.csv", ';');
         personne.quete_kill = 0;
         String[][] rep = new String[rowCount(quete)][columnCount(quete)];
         int ligne = 0;
@@ -519,11 +519,11 @@ void loadquete() {
                 }
             }
         }
-        saveCSV(rep, "jeux/entité/option pnj/quete.csv", ';');
+        saveCSV(rep, "../ressources/entité/option pnj/quete.csv", ';');
     }
 
     boolean verifierquete(int ligne) {
-        CSVFile current = loadCSV("jeux/entité/option pnj/quete.csv", ';');
+        CSVFile current = loadCSV("../ressources/entité/option pnj/quete.csv", ';');
         if (personne.quete_kill >= stringToInt(getCell(current,ligne , 3))) {
             return true;
         }
@@ -542,7 +542,7 @@ void loadquete() {
 
     Monstre newMonstre(String nom) {
         int ligne = 0;
-        CSVFile current = loadCSV("jeux/entité/monstre.csv", ';');
+        CSVFile current = loadCSV("../ressources/entité/monstre.csv", ';');
 
         while (!equals(getCell(current, ligne, 0), nom)) {
             ligne++;
@@ -569,7 +569,7 @@ void loadquete() {
 // inventaire+Market
 //////////////////////////////////////////////////////////////////////////
 void afficherinventaire(){
-    CSVFile current = loadCSV("jeux/utilisateur/inventaire.csv", ';');
+    CSVFile current = loadCSV("../ressources/utilisateur/inventaire.csv", ';');
     print(RESET);
     println("\n════════════ INVENTAIRE ════════════");
 
@@ -585,8 +585,8 @@ void afficherinventaire(){
 }
 
 void Market(){
-    CSVFile current = loadCSV("jeux/utilisateur/objet.csv", ';');
-    CSVFile inv = loadCSV("jeux/utilisateur/inventaire.csv", ';');
+    CSVFile current = loadCSV("../ressources/utilisateur/objet.csv", ';');
+    CSVFile inv = loadCSV("../ressources/utilisateur/inventaire.csv", ';');
     print(RESET);
     println("\n═══════════════════ Market ═══════════════════\n");
     afficherMisc("vendeur");
@@ -630,7 +630,7 @@ void Market(){
 }
 
     void utiliserObjet(Monstre monstre) {
-        CSVFile current = loadCSV("jeux/utilisateur/inventaire.csv", ';');
+        CSVFile current = loadCSV("../ressources/utilisateur/inventaire.csv", ';');
         afficherinventaire();
         if (rowCount(current) > 0) {
             int ligne = saisie(rowCount(current));
@@ -676,16 +676,16 @@ void Market(){
             ind++;
         }
 
-        saveCSV(rep, "jeux/utilisateur/inventaire.csv", ';');
+        saveCSV(rep, "../ressources/utilisateur/inventaire.csv", ';');
         } else{
             String[][] rep = new String[][]{ new String[]{" "}};
-            saveCSV(rep, "jeux/utilisateur/inventaire.csv", ';');
+            saveCSV(rep, "../ressources/utilisateur/inventaire.csv", ';');
         }
     }
 
     void ajouterobjet(String nom) {
-        CSVFile current = loadCSV("jeux/utilisateur/objet.csv", ';');
-        CSVFile inventaire = loadCSV("jeux/utilisateur/inventaire.csv", ';');
+        CSVFile current = loadCSV("../ressources/utilisateur/objet.csv", ';');
+        CSVFile inventaire = loadCSV("../ressources/utilisateur/inventaire.csv", ';');
         int ligne = 0;
         if(rowCount(inventaire) > 0){
             String[][] rep = new String[rowCount(inventaire) + 1][columnCount(inventaire)];
@@ -700,13 +700,13 @@ void Market(){
         for (int cptcolonne = 0; cptcolonne < columnCount(current)-1; cptcolonne++) {
             rep[rowCount(inventaire)][cptcolonne] = getCell(current, ligne, cptcolonne);
         }
-        saveCSV(rep, "jeux/utilisateur/inventaire.csv", ';');
+        saveCSV(rep, "../ressources/utilisateur/inventaire.csv", ';');
         } else{
             String[][] rep = new String[1][columnCount(current)];
             for (int cptcolonne = 0; cptcolonne < columnCount(current); cptcolonne++) {
                 rep[0][cptcolonne] = getCell(current, ligne, cptcolonne);
             }
-            saveCSV(rep, "jeux/utilisateur/inventaire.csv", ';');
+            saveCSV(rep, "../ressources/utilisateur/inventaire.csv", ';');
         }
         
     }
@@ -766,7 +766,7 @@ void Market(){
 
 //fonction à appeller facilement pour lancer l'action de l'attaque
     String attaque() {
-        CSVFile current = loadCSV("jeux/systeme de magie/possibilite attaque.csv", ';');
+        CSVFile current = loadCSV("../ressources/systeme de magie/possibilite attaque.csv", ';');
         String[] attaquePossibles = new String[rowCount(current)];
         int cpt = 0;
         while (cpt < length(attaquePossibles) && stringToInt(getCell(current, cpt, 2)) <= personne.level) {
@@ -781,7 +781,7 @@ void Market(){
     }
 
     int degats(String attaque) {
-        CSVFile current = loadCSV("jeux/systeme de magie/possibilite attaque.csv", ';');
+        CSVFile current = loadCSV("../ressources/systeme de magie/possibilite attaque.csv", ';');
         int cpt = -1;
         int resultat;
         do {
@@ -1041,12 +1041,12 @@ void testVerifierQuete() {
 //////////////////////////////////////////////////////
 void testInventaire() {
     ajouterobjet("potion de soins");
-    CSVFile inv = loadCSV("jeux/utilisateur/inventaire.csv", ';');
+    CSVFile inv = loadCSV("../ressources/utilisateur/inventaire.csv", ';');
 
     assertEquals("potion de soins", getCell(inv, 0, 0));
 
     supprimerobjet(inv, 0);
-    inv = loadCSV("jeux/utilisateur/inventaire.csv", ';');
+    inv = loadCSV("../ressources/utilisateur/inventaire.csv", ';');
 
     assertEquals(0, rowCount(inv));
 }
@@ -1064,7 +1064,7 @@ void testSauvegarde() {
 
     sauvegarder();
 
-    CSVFile save = loadCSV("jeux/utilisateur/sauvegarde.csv", ';');
+    CSVFile save = loadCSV("../ressources/utilisateur/sauvegarde.csv", ';');
 
     assertEquals("Testeur", getCell(save, 0, 0));
     assertEquals("80", getCell(save, 1, 0));
@@ -1078,7 +1078,7 @@ void testSauvegarde() {
 // TEST attaques par niveau
 //////////////////////////////////////////////////////
 void testAttaquesParNiveau() {
-    CSVFile atk = loadCSV("jeux/systeme de magie/possibilite attaque.csv", ';');
+    CSVFile atk = loadCSV("../ressources/systeme de magie/possibilite attaque.csv", ';');
 
     joueur.level = 1;
     assertEquals(4, countAttaques(atk, 1));

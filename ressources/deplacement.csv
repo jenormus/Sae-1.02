@@ -12,7 +12,7 @@ L'espace repos;lieu;La cour arrière
 Les toilettes;lieu;La cour arrière;monstre;ogre
 La route;lieu;Guilde de Magie;lieu;Le Donjon;lieu;La Forêt
 Le Donjon;lieu;La route;lieu;Embouchure ouest;lieu;Embouchure nord;lieu;Embouchure est;pnj;gardien
-Embouchure ouest;lieu;Le Donjon;lieu;Crevasse;lieu;Tunnel lumineux;bebe_dragon
+Embouchure ouest;lieu;Le Donjon;lieu;Crevasse;lieu;Tunnel lumineux;monstre;bebe_dragon
 Crevasse;lieu;Embouchure ouest;bossroom;Antre sombre;monstre;bebe_dragon
 Antre sombre;lieu;Crevasse;monstre;dragon
 Tunnel lumineux;lieu;Embouchure ouest;monstre;sorciere
