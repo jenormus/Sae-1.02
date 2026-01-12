@@ -1,7 +1,7 @@
 bebe_dragon;100;boule de feu;5;10;normal
-dragon;400;déflagration;15;20;boss
+dragon;800;déflagration;25;20;boss
 fantome;85;jet d'ectoplasme;4;30;normal
 ogre;150;attaque au gourdin;9;5;normal
 sorciere;120;potion de malemort;8;15;normal
 loup;110;morsures;7;20;normal
-Roi_fantome;220;aspiration ectoplasmique;12;35;boss
+Roi_fantome;420;aspiration ectoplasmique;12;35;boss

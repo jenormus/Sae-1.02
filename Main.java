@@ -578,7 +578,7 @@ void afficherinventaire(){
         println("════════════════════════════════════\n");
     } else {
         for (int ligne = 0; ligne < rowCount(current); ligne++){
-            println("  [" + ligne + "] " + getCell(current, ligne, 0));
+            println("  [" + ligne + "] " + getCell(current, ligne, 0) + getCell(current, ligne, 2));
         }
         println("════════════════════════════════════\n");
     }
@@ -609,6 +609,7 @@ void Market(){
             waitingForPlayerActivity();
         }
     } else if(choix==1){
+        if (rowCount(current) > 0){
         println("Que souhaité vous vendre?");
         println("Tips:Chaque vente vous rapporte 250 or qu'importe l'objet");
         afficherinventaire();
@@ -616,6 +617,10 @@ void Market(){
         supprimerobjet(inv,choixinv);
         personne.argent+=250;
         waitingForPlayerActivity();
+        } else{
+            println("Vous n'avez aucun objet pensez a acheter une potion");
+            waitingForPlayerActivity();
+        }
     } else{
         println("\nAu revoir et revenez avec plus d'argent");
         waitingForPlayerActivity();
@@ -888,6 +893,8 @@ void Market(){
                     attaqueMonstre(currentMonstre);
                 } else {
                     mortMonstre(currentMonstre);
+                    personne.pv_max=personne.pv_max+1;
+                    personne.pv=personne.pv_max;
                     return false;
                 }
                 if (personne.pv <= 0) {
@@ -898,4 +905,200 @@ void Market(){
         }
     }
 
+}
+
+//////////////////////////////////////////////////////
+//TEST
+//////////////////////////////////////////////////////
+User joueur;
+
+//////////////////////////////////////////////////////
+// ALGORITHME PRINCIPAL (MODE TEST)
+//////////////////////////////////////////////////////
+/*void algorithm() {
+
+    joueur = new User();
+    personne = joueur; // alias pour compatibilité avec le jeu
+
+    testEstNombre();
+    testDegats();
+    testNewMonstre();
+    testScalingMonstre();
+    testBoss();
+    testQuete();
+    testVerifierMonstreTuer();
+    testVerifierQuete();
+    testInventaire();
+    testSauvegarde();
+    testAttaquesParNiveau();
+
+    println("\n✅ TOUS LES TESTS SONT PASSÉS AVEC SUCCÈS");
+
+    // jeux(); // ← à remettre après les tests
+}*/
+
+//////////////////////////////////////////////////////
+// TEST estNombre
+//////////////////////////////////////////////////////
+void testEstNombre() {
+    assertEquals(true, estNombre("0"));
+    assertEquals(true, estNombre("123"));
+    assertEquals(true, estNombre("999"));
+
+    assertEquals(false, estNombre(""));
+    assertEquals(false, estNombre(" "));
+    assertEquals(false, estNombre("12a"));
+    assertEquals(false, estNombre("a12"));
+    assertEquals(false, estNombre("12.5"));
+}
+
+//////////////////////////////////////////////////////
+// TEST degats
+//////////////////////////////////////////////////////
+void testDegats() {
+    assertEquals(20, degats("Coup du Temps"));
+    assertEquals(19, degats("Pointe du Scribe"));
+    assertEquals(22, degats("Marche des Géants"));
+    assertEquals(30, degats("Guillotine"));
+    assertEquals(42, degats("Trône d'Or"));
+}
+
+//////////////////////////////////////////////////////
+// TEST création monstre
+//////////////////////////////////////////////////////
+void testNewMonstre() {
+    joueur.level = 1;
+
+    Monstre loup = newMonstre("loup");
+
+    assertEquals("loup", loup.nom);
+    assertEquals(110, loup.pvmax);
+    assertEquals(110, loup.pv);
+    assertEquals(7, loup.attaquedegat);
+    assertEquals(20, loup.esquive);
+}
+
+//////////////////////////////////////////////////////
+// TEST scaling monstre
+//////////////////////////////////////////////////////
+void testScalingMonstre() {
+    joueur.level = 2;
+    assertEquals(132, newMonstre("loup").pvmax);
+
+    joueur.level = 3;
+    assertEquals(154, newMonstre("loup").pvmax);
+
+    joueur.level = 4;
+    assertEquals(176, newMonstre("loup").pvmax);
+}
+
+//////////////////////////////////////////////////////
+// TEST boss
+//////////////////////////////////////////////////////
+void testBoss() {
+    joueur.level = 3;
+    assertEquals(false, bossStuff("La forge"));
+
+    joueur.level = 6;
+    assertEquals(true, bossStuff("La forge"));
+
+    joueur.level = 10;
+    assertEquals(true, bossStuff("Antre sombre"));
+}
+
+//////////////////////////////////////////////////////
+// TEST quête
+//////////////////////////////////////////////////////
+void testQuete() {
+    joueur.level = 1;
+    loadquete();
+
+    assertEquals("loup", joueur.quete_cible);
+    assertEquals(0, joueur.quete_kill);
+}
+
+//////////////////////////////////////////////////////
+// TEST monstre tué
+//////////////////////////////////////////////////////
+void testVerifierMonstreTuer() {
+    verifiermonstretuer("fantome");
+    assertEquals(0, joueur.quete_kill);
+
+    verifiermonstretuer("loup");
+    assertEquals(1, joueur.quete_kill);
+}
+
+//////////////////////////////////////////////////////
+// TEST validation quête
+//////////////////////////////////////////////////////
+void testVerifierQuete() {
+    assertEquals(true, verifierquete(0));
+}
+
+//////////////////////////////////////////////////////
+// TEST inventaire
+//////////////////////////////////////////////////////
+void testInventaire() {
+    ajouterobjet("potion de soins");
+    CSVFile inv = loadCSV("jeux/utilisateur/inventaire.csv", ';');
+
+    assertEquals("potion de soins", getCell(inv, 0, 0));
+
+    supprimerobjet(inv, 0);
+    inv = loadCSV("jeux/utilisateur/inventaire.csv", ';');
+
+    assertEquals(0, rowCount(inv));
+}
+
+//////////////////////////////////////////////////////
+// TEST sauvegarde
+//////////////////////////////////////////////////////
+void testSauvegarde() {
+    joueur.nom = "Testeur";
+    joueur.level = 5;
+    joueur.pv = 80;
+    joueur.pv_max = 100;
+    joueur.currentlieu = "La route";
+    joueur.argent = 999;
+
+    sauvegarder();
+
+    CSVFile save = loadCSV("jeux/utilisateur/sauvegarde.csv", ';');
+
+    assertEquals("Testeur", getCell(save, 0, 0));
+    assertEquals("80", getCell(save, 1, 0));
+    assertEquals("100", getCell(save, 1, 1));
+    assertEquals("5", getCell(save, 2, 0));
+    assertEquals("La route", getCell(save, 4, 0));
+    assertEquals("999", getCell(save, 5, 0));
+}
+
+//////////////////////////////////////////////////////
+// TEST attaques par niveau
+//////////////////////////////////////////////////////
+void testAttaquesParNiveau() {
+    CSVFile atk = loadCSV("jeux/systeme de magie/possibilite attaque.csv", ';');
+
+    joueur.level = 1;
+    assertEquals(4, countAttaques(atk, 1));
+
+    joueur.level = 3;
+    assertEquals(7, countAttaques(atk, 3));
+
+    joueur.level = 6;
+    assertEquals(13, countAttaques(atk, 6));
+
+    joueur.level = 10;
+    assertEquals(20, countAttaques(atk, 10));
+}
+
+//////////////////////////////////////////////////////
+// FONCTION UTILITAIRE
+//////////////////////////////////////////////////////
+int countAttaques(CSVFile atk, int niveau) {
+    int cpt = 0;
+    while (cpt < rowCount(atk) && stringToInt(getCell(atk, cpt, 2)) <= niveau) {
+        cpt++;
+    }
+    return cpt;
 }
