@@ -41,7 +41,8 @@ class Main extends Program {
                 NouvellePartie();
                 menu();
             }else{
-            menu();
+                personne = newUser();
+                menu();
             }
         } else if (rep == 2) {
             Credit();
@@ -88,7 +89,7 @@ class Main extends Program {
         String[][] save2 = new String[][]{
             new String[]{" "}};
         saveCSV(save, "jeux/utilisateur/sauvegarde.csv", ';');
-        saveCSV(save2, "jeux/utilisateur/inventaire.csv");
+        saveCSV(save2, "jeux/utilisateur/inventaire.csv", ';');
         CSVFile quete = loadCSV("jeux/entité/option pnj/quete.csv", ';');
         String[][] rep = new String[rowCount(quete)][columnCount(quete)];
         int ligne = 0;
@@ -568,14 +569,13 @@ void loadquete() {
 // inventaire+Market
 //////////////////////////////////////////////////////////////////////////
 void afficherinventaire(){
-    CSVFile current = loadCSV("jeux/utilisateur/inventaire.csv");
+    CSVFile current = loadCSV("jeux/utilisateur/inventaire.csv", ';');
     print(RESET);
     println("\n════════════ INVENTAIRE ════════════");
 
     if (rowCount(current) == 0){
         println("  (Inventaire vide)");
         println("════════════════════════════════════\n");
-        waitingForPlayerActivity();
     } else {
         for (int ligne = 0; ligne < rowCount(current); ligne++){
             println("  [" + ligne + "] " + getCell(current, ligne, 0));
@@ -586,7 +586,7 @@ void afficherinventaire(){
 
 void Market(){
     CSVFile current = loadCSV("jeux/utilisateur/objet.csv", ';');
-    CSVFile inv = loadCSV("jeux/utilisateur/inventaire.csv");
+    CSVFile inv = loadCSV("jeux/utilisateur/inventaire.csv", ';');
     print(RESET);
     println("\n═══════════════════ Market ═══════════════════\n");
     afficherMisc("vendeur");
@@ -624,7 +624,7 @@ void Market(){
 }
 
     void utiliserObjet(Monstre monstre) {
-        CSVFile current = loadCSV("jeux/utilisateur/inventaire.csv");
+        CSVFile current = loadCSV("jeux/utilisateur/inventaire.csv", ';');
         afficherinventaire();
         if (rowCount(current) > 0) {
             int ligne = saisie(rowCount(current));
@@ -672,14 +672,14 @@ void Market(){
 
         saveCSV(rep, "jeux/utilisateur/inventaire.csv", ';');
         } else{
-            String[][] rep = new String[]{" "};
+            String[][] rep = new String[][]{ new String[]{" "}};
             saveCSV(rep, "jeux/utilisateur/inventaire.csv", ';');
         }
     }
 
     void ajouterobjet(String nom) {
         CSVFile current = loadCSV("jeux/utilisateur/objet.csv", ';');
-        CSVFile inventaire = loadCSV("jeux/utilisateur/inventaire.csv");
+        CSVFile inventaire = loadCSV("jeux/utilisateur/inventaire.csv", ';');
         int ligne = 0;
         if(rowCount(inventaire) > 0){
             String[][] rep = new String[rowCount(inventaire) + 1][columnCount(inventaire)];
@@ -694,13 +694,13 @@ void Market(){
         for (int cptcolonne = 0; cptcolonne < columnCount(current)-1; cptcolonne++) {
             rep[rowCount(inventaire)][cptcolonne] = getCell(current, ligne, cptcolonne);
         }
-        saveCSV(rep, "jeux/utilisateur/inventaire.csv");
+        saveCSV(rep, "jeux/utilisateur/inventaire.csv", ';');
         } else{
             String[][] rep = new String[1][columnCount(current)];
             for (int cptcolonne = 0; cptcolonne < columnCount(current); cptcolonne++) {
                 rep[0][cptcolonne] = getCell(current, ligne, cptcolonne);
             }
-            saveCSV(rep, "jeux/utilisateur/inventaire.csv");
+            saveCSV(rep, "jeux/utilisateur/inventaire.csv", ';');
         }
         
     }
