@@ -169,7 +169,7 @@ class Main extends Program {
         boolean ingame = true;
         while (ingame) {
             print(RESET);
-            if (personne.level >= rowCount(current)) {
+            if (personne.level >= 3) {
                 ingame = false;
                 println("Merci d'avoir jouer a notre magnifique jeu qui vaut surement un 20/20");
                 Credit();
@@ -236,7 +236,7 @@ class Main extends Program {
     }
 
     boolean bossStuff(String boss_entrer){
-        CSVFile current = loadCSV("../ressources/entité/demo.csv", ';');
+        CSVFile current = loadCSV("../ressources/entité/desc_boss_demo.csv", ';');
         int ligne = 0;
         print(RESET);
         while (!equals(boss_entrer,getCell(current,ligne,0))){
@@ -379,7 +379,7 @@ class Main extends Program {
                     println(pnj + " vous parle");
                     println("════════════════════════════════════");
                     blaBlaPnj("Il vous offre une potion de soin et "+250*personne.level+" or pour votre bravour .");
-                    ajouterobjet("potion de soins");
+                    ajouterobjet("potion de soins 1");
                     personne.argent=personne.argent+250*personne.level; 
                     personne.level++;
                     personne.pv_max=personne.pv_max+10;
@@ -583,7 +583,7 @@ void afficherinventaire(){
 }
 
 void Market(){
-    CSVFile current = loadCSV("../ressources/utilisateur/objet.csv", ';');
+    CSVFile current = loadCSV("../ressources/utilisateur/objet_demo.csv", ';');
     CSVFile inv = loadCSV("../ressources/utilisateur/inventaire.csv", ';');
     print(RESET);
     println("\n═══════════════════ Market ═══════════════════\n");
@@ -682,7 +682,7 @@ void Market(){
     }
 
     void ajouterobjet(String nom) {
-        CSVFile current = loadCSV("../ressources/utilisateur/objet.csv", ';');
+        CSVFile current = loadCSV("../ressources/utilisateur/objet_demo.csv", ';');
         CSVFile inventaire = loadCSV("../ressources/utilisateur/inventaire.csv", ';');
         int ligne = 0;
         if(rowCount(inventaire) > 0){
@@ -764,7 +764,7 @@ void Market(){
 
 //fonction à appeller facilement pour lancer l'action de l'attaque
     String attaque() {
-        CSVFile current = loadCSV("../ressources/systeme de magie/possibilite attaque.csv", ';');
+        CSVFile current = loadCSV("../ressources/systeme de magie/possibilite attaque_demo.csv", ';');
         String[] attaquePossibles = new String[rowCount(current)];
         int cpt = 0;
         while (cpt < length(attaquePossibles) && stringToInt(getCell(current, cpt, 2)) <= personne.level) {
@@ -779,7 +779,7 @@ void Market(){
     }
 
     int degats(String attaque) {
-        CSVFile current = loadCSV("../ressources/systeme de magie/possibilite attaque.csv", ';');
+        CSVFile current = loadCSV("../ressources/systeme de magie/possibilite attaque_demo.csv", ';');
         int cpt = -1;
         int resultat;
         do {
@@ -1076,7 +1076,7 @@ void testSauvegarde() {
 // TEST attaques par niveau
 //////////////////////////////////////////////////////
 void testAttaquesParNiveau() {
-    CSVFile atk = loadCSV("../ressources/systeme de magie/possibilite attaque.csv", ';');
+    CSVFile atk = loadCSV("../ressources/systeme de magie/possibilite attaque_demo.csv", ';');
 
     joueur.level = 1;
     assertEquals(4, countAttaques(atk, 1));
