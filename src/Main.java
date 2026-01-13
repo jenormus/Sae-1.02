@@ -88,7 +88,7 @@ class Main extends Program {
             new String[]{" "}};
         saveCSV(save, "../ressources/utilisateur/sauvegarde.csv", ';');
         saveCSV(save2, "../ressources/utilisateur/inventaire.csv", ';');
-        CSVFile quete = loadCSV("../ressources/entité/option pnj/quete.csv", ';');
+        CSVFile quete = loadCSV("../ressources/entité/option pnj/quete_demo.csv", ';');
         String[][] rep = new String[rowCount(quete)][columnCount(quete)];
         int ligne = 0;
         for (int cptligne = 0; cptligne < rowCount(quete); cptligne++) {
@@ -100,7 +100,7 @@ class Main extends Program {
                 }
             }
         }
-        saveCSV(rep, "../ressources/entité/option pnj/quete.csv", ';');
+        saveCSV(rep, "../ressources/entité/option pnj/quete_demo.csv", ';');
         print(RESET);
         println("<Tips> : Ne vous appelez pas \"Joueur\" au peur de consequence inatendue\n");
         personne = newUser();
@@ -165,7 +165,7 @@ class Main extends Program {
 //////////////////////////////////////////////////////////////////////////
     
     void menu() {
-        CSVFile current = loadCSV("../ressources/entité/option pnj/quete.csv", ';');
+        CSVFile current = loadCSV("../ressources/entité/option pnj/quete_demo.csv", ';');
         boolean ingame = true;
         while (ingame) {
             print(RESET);
@@ -236,7 +236,7 @@ class Main extends Program {
     }
 
     boolean bossStuff(String boss_entrer){
-        CSVFile current = loadCSV("../ressources/entité/desc_boss.csv", ';');
+        CSVFile current = loadCSV("../ressources/entité/demo.csv", ';');
         int ligne = 0;
         print(RESET);
         while (!equals(boss_entrer,getCell(current,ligne,0))){
@@ -345,7 +345,7 @@ class Main extends Program {
     void loadPnj(String pnj) {
         afficherSpritePNJ(pnj);
 
-        CSVFile current = loadCSV("../ressources/entité/option pnj/quete.csv", ';');
+        CSVFile current = loadCSV("../ressources/entité/option pnj/quete_demo.csv", ';');
         int ligne = 0;
         String rep = "";
         boolean encours = true;
@@ -502,7 +502,7 @@ class Main extends Program {
 // quete
 //////////////////////////////////////////////////////////////////////////
 void loadquete() {
-        CSVFile quete = loadCSV("../ressources/entité/option pnj/quete.csv", ';');
+        CSVFile quete = loadCSV("../ressources/entité/option pnj/quete_demo.csv", ';');
         personne.quete_kill = 0;
         String[][] rep = new String[rowCount(quete)][columnCount(quete)];
         int ligne = 0;
@@ -517,11 +517,11 @@ void loadquete() {
                 }
             }
         }
-        saveCSV(rep, "../ressources/entité/option pnj/quete.csv", ';');
+        saveCSV(rep, "../ressources/entité/option pnj/quete_demo.csv", ';');
     }
 
     boolean verifierquete(int ligne) {
-        CSVFile current = loadCSV("../ressources/entité/option pnj/quete.csv", ';');
+        CSVFile current = loadCSV("../ressources/entité/option pnj/quete_demo.csv", ';');
         if (personne.quete_kill >= stringToInt(getCell(current,ligne , 3))) {
             return true;
         }
