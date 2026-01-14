@@ -35,36 +35,42 @@ Sae 1.02/
 ├── ressources/
 │   │
 │   ├── utilisateur/
-│   │   ├── sauvegarde.csv
-│   │   ├── inventaire.csv
-│   │   └── objet.csv
+|   |   ├── inventaire.csv
+│   │   ├── objet.csv
+│   │   └── sauvegarde.csv
 │   │
 │   ├── entité/
 │   │   ├── monstre.csv
 │   │   ├── desc_boss.csv
 │   │   │
 │   │   ├── Ascii art monstre/
-│   │   │   ├── loup.txt
+│   │   │   ├── Roi_fantome.txt
+│   │   │   ├── bebe_dragon.txt
+│   │   │   ├── dragon.txt
 │   │   │   ├── fantome.txt
-│   │   │   └── dragon.txt
+│   │   │   ├── loup.txt
+│   │   │   ├── ogre.txt
+│   │   │   └── sorciere.txt
 │   │   │
 │   │   ├── Ascii art pnj/
-│   │   │   ├── merlin.txt
-│   │   │   ├── forgeron.txt
-│   │   │   └── marchand.txt
+│   │   │   ├── directeur.txt
+│   │   │   ├── elf.txt
+│   │   │   ├── gardien.txt
+│   │   │   ├── gnome.txt
+│   │   │   └── merlin.txt
 │   │   │
 │   │   ├── Ascii misc/
-│   │   │   ├── title.txt
-│   │   │   ├── victoire.txt
 │   │   │   ├── mort_joueur.txt
-│   │   │   └── vendeur.txt
+│   │   │   ├── title.txt
+│   │   │   ├── vendeur.txt
+│   │   │   └── victoire.txt
 │   │   │
 │   │   └── option pnj/
 │   │       └── quete.csv
 │   │
 │   ├── systeme de magie/
-│   │   ├── question.csv
-│   │   └── possibilite attaque.csv
+│   │   ├── possibilite attaque.csv
+│   │   └── question.csv
 │   │
 │   ├── deplacement.csv
 │   ├── credit.txt
@@ -78,24 +84,19 @@ Sae 1.02/
 │   └── Monstre.class
 │
 ├── shots/
-│   │
-│   ├── attaquer.png
+│   ├── Boss Roi_fantome.png
+│   ├── Combat Gagner.png
+│   ├── Vendre.png
 │   ├── acheter potion.png
-│   ├── utiliser objet.png
-│   ├── vendre.png
-│   │
+│   ├── attaquer.png
+│   ├── boss room non.png
+│   ├── boss room oui.png
 │   ├── inventaire.png
 │   ├── menu déplacement.png
-│   ├── pnj interaction.png
-│   │
 │   ├── monstre.png
-│   ├── Boss Roi_fantome.png
-│   │
-│   ├── boss room oui.png
-│   ├── boss room non.png
-│   │
-│   ├── Combat Gagner.png
-│   └── mort.png
+│   ├── mort.png
+│   ├── pnj interaction.png
+│   └── utiliser objet.png
 │
 └── README.md
 ```
