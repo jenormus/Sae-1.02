@@ -15,7 +15,7 @@ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
 Bienvenue sur Praeterita, un  un jeu de rôle narratif où l’histoire devient une arme. Dans un monde ancien menacé par des monstres extrêmement puissants, le joueur incarne un héros chargé de sauver le monde. Chaque combat et chaque exploration plongent le joueur au cœur des grandes périodes de l’Histoire. La magie de Praeterita ne se maîtrise pas par la force brute, mais par la connaissance : pour attaquer, le joueur doit répondre à des questions historiques. Plus le joueur complète des quêtes, plus il débloque des attaques toujours plus puissantes. Tout au long de l’aventure, des monstres et des boss légendaires se dressent sur sa route. Le joueur progresse en apprenant, en combattant et en gagnant des niveaux à la fin de chaque quête. Praeterita transforme la révision de l’Histoire en une aventure immersive et captivante. Chaque victoire récompense le savoir et la réflexion. Dans Praeterita, sauver le monde passe par la maîtrise du passé. 
 
-Pour lancer le jeu, compilez le fichiez Main.java puis executez le fichier Main.class à l'aide des commandes :
+Pour lancer le jeu, importez l'archive ijava, compilez le fichiez Main.java puis executez le fichier Main.class à l'aide des commandes :
 
     ijava compile src/Main.java
     ijava execute src/Main
