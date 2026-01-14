@@ -1,4 +1,4 @@
-> **_NOTE:_** although this is the main branch, this version isn't the one you should use to play the game. go to the "playable version" branch instead to get the actual game folder
+> **_NOTE:_** although this is the main branch, this version isn't the one you should use to play the game. go to the "playable-version" branch instead to get the actual game folder
 > 
 ```
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
