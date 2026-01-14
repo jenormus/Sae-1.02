@@ -29,7 +29,7 @@ Détails fichier :
 -des captures d'écran sont dans le dossier shots pour avoir une preview de ce à quoi le jeu ressemble
 
 Arborescence:
-
+```
 Sae 1.02/
 │
 ├── ressources/
@@ -96,5 +96,5 @@ Sae 1.02/
 │   │
 │   ├── Combat Gagner.png
 │   └── mort.png
-│
+│```
 └── README.md
